@@ -1,5 +1,7 @@
 # mtg-chromatic-lantern
 
+[![Build status](https://ci.appveyor.com/api/projects/status/6q86yiwu6xoqsuf1?svg=true)](https://ci.appveyor.com/project/RGBKnights/mtg-chromatic-lantern)
+
 ## Project setup
 ```
 npm install

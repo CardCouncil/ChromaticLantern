@@ -1,0 +1,26 @@
+version: 1.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+branches:
+  only:
+  - master
+skip_tags: true
+environment:
+  nodejs_version: 8
+install:
+- ps: Install-Product node $env:nodejs_version
+build_script:
+- cmd: npm run build
+artifacts:
+- path: dist\
+  name: web-app
+deploy:
+- provider: WebDeploy
+  server: https://vs-chromatic-lantern.azurewebsites.net/:443/msdeploy.axd?site=vs-chromatic-lantern
+  website: vs-chromatic-lantern
+  username: $vs-chromatic-lantern
+  password:
+    secure: YD3il6c7VyRx3zSOZ9I6YXyen7YmGpxSG4EPdNTPZc9CTi0l2I+urKEwKbT1ZnlpbSZkVa5bc75lH7/O5YnMYw==
+  artifact: web-app
+  remove_files: true
+  app_offline: true
