@@ -141,9 +141,10 @@ const store = new Vuex.Store({
       commit("clearDeck");
       commit("clearGroups");
     },
-    promo({ commit, state  }) {
-      if(state.promo.length == 0) {
-        const api = "https://api.scryfall.com/cards/search?q=Fireball&unique=prints&order=released&dir=asc";
+    promo({ commit, state }) {
+      if (state.promo.length == 0) {
+        const api =
+          "https://api.scryfall.com/cards/search?q=Fireball&unique=prints&order=released&dir=asc";
         axios
           .get(api)
           .then(response => {
