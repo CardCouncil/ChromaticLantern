@@ -16,9 +16,14 @@ artifacts:
 - path: dist\
   name: web-app
 deploy:
-- provider: AzureAppServiceZipDeploy
+- provider: WebDeploy
+  server: vs-chromatic-lantern.scm.azurewebsites.net:443
   website: vs-chromatic-lantern
   username: $vs-chromatic-lantern
   password:
     secure: YD3il6c7VyRx3zSOZ9I6YXyen7YmGpxSG4EPdNTPZc9CTi0l2I+urKEwKbT1ZnlpbSZkVa5bc75lH7/O5YnMYw==
   artifact: web-app
+  aspnet_core: false
+  remove_files: true
+  app_offline: true
+  aspnet_core_force_restart: false
