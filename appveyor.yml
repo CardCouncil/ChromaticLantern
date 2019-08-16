@@ -9,7 +9,7 @@ environment:
   nodejs_version: 8
 install:
 - ps: Install-Product node $env:nodejs_version
-- ps: npm install
+- ps: npm install --loglevel=error
 build_script:
 - cmd: npm run build
 artifacts:
