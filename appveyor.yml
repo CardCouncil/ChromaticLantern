@@ -17,7 +17,7 @@ artifacts:
   name: web-app
 deploy:
 - provider: WebDeploy
-  server: vs-chromatic-lantern.scm.azurewebsites.net:443
+  server: https://vs-chromatic-lantern.scm.azurewebsites.net:443/msdeploy.axd?site=vs-chromatic-lantern
   website: vs-chromatic-lantern
   username: $vs-chromatic-lantern
   password:
@@ -25,5 +25,5 @@ deploy:
   artifact: web-app
   aspnet_core: false
   remove_files: true
-  app_offline: true
+  app_offline: false
   aspnet_core_force_restart: false
