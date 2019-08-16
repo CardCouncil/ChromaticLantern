@@ -1,0 +1,82 @@
+[
+  {
+    "value": "core",
+    "text": "Core"
+  },
+  {
+    "value": "expansion",
+    "text": "Expansion"
+  },
+  {
+    "value": "masters",
+    "text": "Masters"
+  },
+  {
+    "value": "masterpiece",
+    "text": "Masterpiece"
+  },
+  {
+    "value": "from_the_vault",
+    "text": "From the Vault"
+  },
+  {
+    "value": "spellbook",
+    "text": "Spellbook"
+  },
+  {
+    "value": "premium_deck",
+    "text": "Premium Deck"
+  },
+  {
+    "value": "duel_deck",
+    "text": "Duel Decks"
+  },
+  {
+    "value": "draft_innovation",
+    "text": "Draft"
+  },
+  {
+    "value": "commander",
+    "text": "Commander"
+  },
+  {
+    "value": "planechase",
+    "text": "Planechase"
+  },
+  {
+    "value": "archenemy",
+    "text": "Archenemy"
+  },
+  {
+    "value": "vanguard",
+    "text": "Vanguard"
+  },
+  {
+    "value": "treasure_chest",
+    "text": "Magic Online"
+  },
+  {
+    "value": "funny",
+    "text": "Un-Sets (funny)"
+  },
+  {
+    "value": "starter",
+    "text": "Introductory Sets"
+  },
+  {
+    "value": "box",
+    "text": "Gift Sets"
+  },
+  {
+    "value": "promo",
+    "text": "Promotional"
+  },
+  {
+    "value": "token",
+    "text": "Tokens and Emblems"
+  },
+  {
+    "value": "memorabilia",
+    "text": "Trophy cards"
+  }
+]
