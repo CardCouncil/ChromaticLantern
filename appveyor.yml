@@ -17,7 +17,7 @@ artifacts:
   name: web-app
 deploy:
 - provider: WebDeploy
-  server: https://vs-chromatic-lantern.azurewebsites.net/:443/msdeploy.axd?site=vs-chromatic-lantern
+  server: vs-chromatic-lantern.scm.azurewebsites.net:443/msdeploy.axd?site=vs-chromatic-lantern
   website: vs-chromatic-lantern
   username: $vs-chromatic-lantern
   password:
