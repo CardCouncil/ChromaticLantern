@@ -19,10 +19,19 @@ const store = new Vuex.Store({
       return setTypes;
     },
     list: state => {
+      // let types = state.types;
+      // let hasFilter = types.length > 0;
+
       let list = [];
+
       for (const set of state.sets) {
         var item = state.groups[set.code];
         if (item.cards.length > 0) {
+          /*
+          if(hasFilter == true) {
+            item.cards = item.cards.filter(_ => types.includes(_.set_type));
+          }
+          */
           list.push(item);
         }
       }
@@ -104,7 +113,7 @@ const store = new Vuex.Store({
           commit("loadGroups", groups);
         });
     },
-    async addCard({ commit, state }, data) {
+    async addCard({ commit }, data) {
       const api =
         "https://api.scryfall.com/cards/" + data.code + "/" + data.number;
       var card = await axios
@@ -123,11 +132,14 @@ const store = new Vuex.Store({
           return response.data.data;
         })
         .then(cards => {
+          /*
           if (state.types.length > 0) {
             return cards.filter(_ => state.types.includes(_.set_type));
           } else {
             return cards;
           }
+          */
+          return cards;
         });
 
       commit("addCard", card);

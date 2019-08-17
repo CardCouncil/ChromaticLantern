@@ -57,12 +57,14 @@
               <b-card-body class="p-1">
                 <b-row>
                   <b-col>
-                    <b-button 
-                      :href="card.scryfall_uri" target="_blank"
+                    <b-button
+                      :href="card.scryfall_uri"
+                      target="_blank"
                       variant="secondary"
                       size="sm"
                       block
-                      >Details</b-button>
+                      >Details</b-button
+                    >
                   </b-col>
                   <b-col>
                     <b-button
@@ -70,7 +72,8 @@
                       variant="secondary"
                       size="sm"
                       block
-                      >Remove</b-button>
+                      >Remove</b-button
+                    >
                   </b-col>
                 </b-row>
               </b-card-body>
