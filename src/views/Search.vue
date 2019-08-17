@@ -55,13 +55,24 @@
               class="p-1"
             >
               <b-card-body class="p-1">
-                <b-button
-                  @click="remove(card.id, card.name)"
-                  variant="secondary"
-                  size="sm"
-                  block
-                  >Remove</b-button
-                >
+                <b-row>
+                  <b-col>
+                    <b-button 
+                      :href="card.scryfall_uri" target="_blank"
+                      variant="secondary"
+                      size="sm"
+                      block
+                      >Details</b-button>
+                  </b-col>
+                  <b-col>
+                    <b-button
+                      @click="remove(card.id, card.name)"
+                      variant="secondary"
+                      size="sm"
+                      block
+                      >Remove</b-button>
+                  </b-col>
+                </b-row>
               </b-card-body>
             </b-card>
           </template>
