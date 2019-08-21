@@ -66,6 +66,7 @@
                       >Details</b-button
                     >
                   </b-col>
+                  <!-- TOOD: Waiting on reponse from https://www.strictlybetter.eu about the CROS policy on their API
                   <b-col>
                     <b-button
                       @click="upgrade(card.name)"
@@ -75,6 +76,7 @@
                       >Ugrade</b-button
                     >
                   </b-col>
+                  -->
                   <b-col>
                     <b-button
                       @click="remove(card.name)"
