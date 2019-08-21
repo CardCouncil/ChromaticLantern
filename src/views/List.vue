@@ -70,7 +70,28 @@ export default {
   },
   computed: {
     groups: function() {
-      return this.$store.getters.list;
+      let sets = this.$store.state.sets;
+      let groups = this.$store.state.groups;
+      let types = this.$store.state.types;
+
+      let list = [];
+      for (const set of sets) {
+        var item = groups[set.code];
+        let value = {
+          cards:
+            types.length > 0
+              ? item.cards.filter(_ => types.includes(_.set_type))
+              : item.cards,
+          set: item.set
+        };
+        if (value.cards.length > 0) {
+          list.push(value);
+        }
+      }
+      list.sort((lhs, rhs) => {
+        return new Date(lhs.set.released_at) - new Date(rhs.set.released_at);
+      });
+      return list;
     }
   },
   methods: {

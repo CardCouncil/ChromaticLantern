@@ -11,34 +11,13 @@ const store = new Vuex.Store({
     sets: [],
     types: [],
     deck: [],
-    groups: {}
+    groups: {},
+    upgrades: []
   },
   getters: {
     // eslint-disable-next-line
     types: state => {
       return setTypes;
-    },
-    list: state => {
-      // let types = state.types;
-      // let hasFilter = types.length > 0;
-
-      let list = [];
-
-      for (const set of state.sets) {
-        var item = state.groups[set.code];
-        if (item.cards.length > 0) {
-          /*
-          if(hasFilter == true) {
-            item.cards = item.cards.filter(_ => types.includes(_.set_type));
-          }
-          */
-          list.push(item);
-        }
-      }
-      list.sort((lhs, rhs) => {
-        return new Date(lhs.set.released_at) - new Date(rhs.set.released_at);
-      });
-      return list;
     }
   },
   mutations: {
@@ -75,8 +54,8 @@ const store = new Vuex.Store({
         state.groups[card.set].cards.push(card);
       }
     },
-    removeCard(state, id) {
-      state.deck = state.deck.filter(_ => _.id != id);
+    removeCard(state, name) {
+      state.deck = state.deck.filter(_ => _.name != name);
     },
     removeCards(state, name) {
       for (const set of state.sets) {
@@ -86,6 +65,9 @@ const store = new Vuex.Store({
     },
     updateTypes(state, types) {
       state.types = types;
+    },
+    loadUpgrades(state, cards) {
+      state.upgrades = cards;
     }
   },
   actions: {
@@ -132,13 +114,6 @@ const store = new Vuex.Store({
           return response.data.data;
         })
         .then(cards => {
-          /*
-          if (state.types.length > 0) {
-            return cards.filter(_ => state.types.includes(_.set_type));
-          } else {
-            return cards;
-          }
-          */
           return cards;
         });
 
@@ -146,7 +121,7 @@ const store = new Vuex.Store({
       commit("addCards", cards);
     },
     removeCard({ commit }, data) {
-      commit("removeCard", data.id);
+      commit("removeCard", data.name);
       commit("removeCards", data.name);
     },
     clear({ commit }) {
@@ -167,6 +142,40 @@ const store = new Vuex.Store({
             commit("promo", urls);
           });
       }
+    },
+    async findUpgrade({ commit }, data) {
+      const api =
+        "https://www.strictlybetter.eu/api/obsoletes/" +
+        encodeURIComponent(data.name);
+
+      var results = await axios.get(api).then(response => {
+        return response.data.data;
+      });
+
+      let upgrades = [];
+      for (const item of results) {
+        let id = item.superior.multiverseid;
+        let votes = item.upvotes;
+        let labels = item.labels;
+        const url = "https://api.scryfall.com/cards/multiverse/" + id;
+        var card = await axios.get(url).then(response => {
+          return response.data;
+        });
+
+        let value = {
+          id: id,
+          votes: votes,
+          upgrade: labels,
+          card: card
+        };
+        upgrades.push(value);
+      }
+
+      upgrades.sort((lhs, rhs) => {
+        return new Date(lhs.votes) - new Date(rhs.votes);
+      });
+
+      commit("loadUpgrades", upgrades);
     }
   }
 });

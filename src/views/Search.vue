@@ -68,7 +68,16 @@
                   </b-col>
                   <b-col>
                     <b-button
-                      @click="remove(card.id, card.name)"
+                      @click="upgrade(card.name)"
+                      variant="secondary"
+                      size="sm"
+                      block
+                      >Ugrade</b-button
+                    >
+                  </b-col>
+                  <b-col>
+                    <b-button
+                      @click="remove(card.name)"
                       variant="secondary"
                       size="sm"
                       block
@@ -97,7 +106,7 @@
       </b-col>
     </b-row>
     <br />
-    <b-modal id="bv-modal-example" static hide-header hide-footer>
+    <b-modal id="bv-modal-loading" static hide-header hide-footer>
       <div class="d-block text-center">
         <h4>Loading Cards</h4>
         <p>Please Wait...</p>
@@ -109,6 +118,17 @@
           <b-spinner variant="success" label="Spinning"></b-spinner>
           <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
         </div>
+      </div>
+    </b-modal>
+    <b-modal id="bv-modal-upgrades" title="Upgrades" hide-footer>
+      <div class="d-block text-center">
+        <b-row>
+          <template v-for="item in upgrades">
+            <b-col v-bind:key="item.id">
+              <b-img :src="item.card.image_uris.normal" />
+            </b-col>
+          </template>
+        </b-row>
       </div>
     </b-modal>
   </b-container>
@@ -147,6 +167,9 @@ export default {
   computed: {
     deck: function() {
       return this.$store.state.deck;
+    },
+    upgrades: function() {
+      return this.$store.state.upgrades;
     }
   },
   methods: {
@@ -155,8 +178,8 @@ export default {
       this.input = "";
       this.$store.dispatch("addCard", data);
     },
-    remove: function(id, name) {
-      this.$store.dispatch("removeCard", { id, name });
+    remove: function(name) {
+      this.$store.dispatch("removeCard", { name });
     },
     clear: function() {
       this.$store.dispatch("clear");
@@ -165,10 +188,10 @@ export default {
       this.input = "";
       this.collection = "";
       this.more = !this.more;
-      this.$bvModal.hide("bv-modal-example");
+      this.$bvModal.hide("bv-modal-loading");
     },
     bluck: async function() {
-      this.$bvModal.show("bv-modal-example");
+      this.$bvModal.show("bv-modal-loading");
       let lines = this.collection.split("\n").filter(_ => _ != "");
       for (const input of lines) {
         let data = decodeUrl(input);
@@ -176,7 +199,10 @@ export default {
         await timer(0.5);
       }
       this.toggle();
-      this.$bvModal.hide("bv-modal-example");
+    },
+    upgrade: function(name) {
+      this.$bvModal.show("bv-modal-upgrades");
+      this.$store.dispatch("findUpgrade", { name });
     }
   }
 };
