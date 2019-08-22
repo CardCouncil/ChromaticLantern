@@ -43,55 +43,46 @@
     </b-row>
     <br />
     <b-row>
-      <b-col>
-        <b-card-group columns>
-          <template v-for="card in deck">
-            <b-card
-              v-bind:key="card.id"
-              no-body
-              :img-src="card.image_uris.normal"
-              img-alt="Image"
-              img-top
-              class="p-1"
-            >
-              <b-card-body class="p-1">
-                <b-row>
-                  <b-col>
+      <template v-for="card in deck">
+        <b-col v-bind:key="card.id" cols="3">
+          <b-card
+            no-body
+            :img-src="card.image_uris.normal"
+            img-alt="Image"
+            img-top
+            class="p-1"
+          >
+            <b-card-body class="p-1">
+              <b-row>
+                <b-col class="text-center">
+                  <b-button-group size="sm">
                     <b-button
                       :href="card.scryfall_uri"
                       target="_blank"
-                      variant="secondary"
+                      variant="link"
                       size="sm"
-                      block
                       >Details</b-button
                     >
-                  </b-col>
-                  <!-- TOOD: Waiting on reponse from https://www.strictlybetter.eu about the CROS policy on their API
-                  <b-col>
                     <b-button
-                      @click="upgrade(card.name)"
-                      variant="secondary"
+                      v-if="card.upgrades.length > 0"
+                      @click="upgrade(card.upgrades)"
+                      variant="link"
                       size="sm"
-                      block
-                      >Ugrade</b-button
+                      >Upgrade</b-button
                     >
-                  </b-col>
-                  -->
-                  <b-col>
                     <b-button
                       @click="remove(card.name)"
-                      variant="secondary"
+                      variant="link"
                       size="sm"
-                      block
                       >Remove</b-button
                     >
-                  </b-col>
-                </b-row>
-              </b-card-body>
-            </b-card>
-          </template>
-        </b-card-group>
-      </b-col>
+                  </b-button-group>
+                </b-col>
+              </b-row>
+            </b-card-body>
+          </b-card>
+        </b-col>
+      </template>
     </b-row>
     <br />
     <b-row v-if="deck.length > 0">
@@ -111,7 +102,6 @@
     <b-modal id="bv-modal-loading" static hide-header hide-footer>
       <div class="d-block text-center">
         <h4>Loading Cards</h4>
-        <p>Please Wait...</p>
         <div class="text-center">
           <b-spinner label="Spinning"></b-spinner>
           <b-spinner type="grow" label="Spinning"></b-spinner>
@@ -120,22 +110,68 @@
           <b-spinner variant="success" label="Spinning"></b-spinner>
           <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
         </div>
+        <p>Please Wait...</p>
       </div>
     </b-modal>
-    <b-modal id="bv-modal-upgrades" title="Upgrades" hide-footer>
+    <b-modal id="bv-modal-upgrades" size="lg" title="Upgrades" hide-footer>
       <div class="d-block text-center">
-        <b-row>
+        <b-row v-if="upgrades.length > 0">
           <template v-for="item in upgrades">
-            <b-col v-bind:key="item.id">
-              <b-img :src="item.card.image_uris.normal" />
+            <b-col v-bind:key="item.id" cols="3">
+              <b-card
+                no-body
+                :img-src="item.card.image_uris.normal"
+                :img-alt="item.card.name"
+                img-top
+                class="p-1"
+              >
+                <b-card-body class="p-1">
+                  <b-row>
+                    <b-col cols="12">
+                      <span v-if="item.labels.more_colors">
+                        <img :src="require('@/assets/error.png')" /> More colors
+                      </span>
+                      <span v-else>&nbsp;</span>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col class="text-center">
+                      <b-button-group size="sm">
+                        <b-button
+                          :href="item.card.scryfall_uri"
+                          target="_blank"
+                          variant="link"
+                          size="sm"
+                          >Details</b-button
+                        >
+                        <b-button @click="swap(item)" variant="link" size="sm"
+                          >Swap</b-button
+                        >
+                      </b-button-group>
+                    </b-col>
+                  </b-row>
+                </b-card-body>
+              </b-card>
             </b-col>
           </template>
+        </b-row>
+        <b-row v-else>
+          <b-col>
+            <p>
+              No matches found. Head over to
+              <a
+                href="https://www.strictlybetter.eu/card?name=Arvad%20the%20Cursed"
+                target="_blank"
+                >Strictly Better</a
+              >
+              to suggest one.
+            </p>
+          </b-col>
         </b-row>
       </div>
     </b-modal>
   </b-container>
 </template>
-
 <script>
 function decodeUrl(input) {
   const url = new URL(input);
@@ -147,7 +183,7 @@ function decodeUrl(input) {
 
 function timer(seconds) {
   // eslint-disable-next-line
-  return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
     setTimeout(function() {
       resolve();
     }, seconds * 1000);
@@ -158,9 +194,10 @@ export default {
   name: "search",
   data: function() {
     return {
-      input: "",
       more: false,
-      collection: ""
+      input: "",
+      collection: "",
+      upgrades: []
     };
   },
   mounted: function() {
@@ -169,9 +206,6 @@ export default {
   computed: {
     deck: function() {
       return this.$store.state.deck;
-    },
-    upgrades: function() {
-      return this.$store.state.upgrades;
     }
   },
   methods: {
@@ -202,9 +236,22 @@ export default {
       }
       this.toggle();
     },
-    upgrade: function(name) {
+    upgrade: function(upgrades) {
+      this.upgrades = upgrades;
       this.$bvModal.show("bv-modal-upgrades");
-      this.$store.dispatch("findUpgrade", { name });
+    },
+    swap: function(item) {
+      let data = {
+        original: {
+          name: item.original
+        },
+        replacement: {
+          code: item.card.set,
+          number: item.card.collector_number
+        }
+      };
+      this.$store.dispatch("applyUpgrade", data);
+      this.$bvModal.hide("bv-modal-upgrades");
     }
   }
 };

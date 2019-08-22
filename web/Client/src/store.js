@@ -48,6 +48,7 @@ const store = new Vuex.Store({
     },
     addCard(state, card) {
       state.deck.push(card);
+      state.deck.sort((lhs, rhs) => lhs.name.localeCompare(rhs.name));
     },
     addCards(state, cards) {
       for (const card of cards) {
@@ -56,6 +57,7 @@ const store = new Vuex.Store({
     },
     removeCard(state, name) {
       state.deck = state.deck.filter(_ => _.name != name);
+      state.deck.sort((lhs, rhs) => lhs.name.localeCompare(rhs.name));
     },
     removeCards(state, name) {
       for (const set of state.sets) {
@@ -96,29 +98,43 @@ const store = new Vuex.Store({
         });
     },
     async addCard({ commit }, data) {
-      const api =
-        "https://api.scryfall.com/cards/" + data.code + "/" + data.number;
-      var card = await axios
-        .get(api)
-        .then(response => {
+      let url = "";
+      url = `https://api.scryfall.com/cards/${data.code}/${data.number}`;
+      var card = await axios.get(url).then(response => {
+        return response.data;
+      });
+
+      url = `https://api.scryfall.com/cards/search?q=!"${card.name}"&unique=prints`;
+      var reprints = await axios.get(url).then(response => {
+        return response.data.data;
+      });
+
+      url =
+        "/api/StrictlyBetter/Obsoletes/?name=" + encodeURIComponent(card.name);
+      var upgrades = await axios.get(url).then(response => {
+        return response.data.data;
+      });
+
+      card.upgrades = [];
+      for (const item of upgrades) {
+        var api = `https://api.scryfall.com/cards/multiverse/${item.superior.multiverseid}`;
+        var replacement = await axios.get(api).then(response => {
           return response.data;
-        })
-        .then(card => {
-          return card;
         });
 
-      var url = `https://api.scryfall.com/cards/search?q=!%20${card.name}%20&unique=prints`;
-      var cards = await axios
-        .get(url)
-        .then(response => {
-          return response.data.data;
-        })
-        .then(cards => {
-          return cards;
+        card.upgrades.push({
+          id: item.id,
+          votes: item.upvotes,
+          labels: item.labels,
+          card: replacement,
+          original: card.name
         });
+      }
+
+      card.upgrades.sort((lhs, rhs) => rhs.votes - lhs.votes); // desc
 
       commit("addCard", card);
-      commit("addCards", cards);
+      commit("addCards", reprints);
     },
     removeCard({ commit }, data) {
       commit("removeCard", data.name);
@@ -143,39 +159,10 @@ const store = new Vuex.Store({
           });
       }
     },
-    async findUpgrade({ commit }, data) {
-      const api =
-        "https://www.strictlybetter.eu/api/obsoletes/" +
-        encodeURIComponent(data.name);
-
-      var results = await axios.get(api).then(response => {
-        return response.data.data;
-      });
-
-      let upgrades = [];
-      for (const item of results) {
-        let id = item.superior.multiverseid;
-        let votes = item.upvotes;
-        let labels = item.labels;
-        const url = "https://api.scryfall.com/cards/multiverse/" + id;
-        var card = await axios.get(url).then(response => {
-          return response.data;
-        });
-
-        let value = {
-          id: id,
-          votes: votes,
-          upgrade: labels,
-          card: card
-        };
-        upgrades.push(value);
-      }
-
-      upgrades.sort((lhs, rhs) => {
-        return new Date(lhs.votes) - new Date(rhs.votes);
-      });
-
-      commit("loadUpgrades", upgrades);
+    applyUpgrade({ commit, dispatch }, data) {
+      commit("removeCard", data.original.name);
+      commit("removeCards", data.original.name);
+      dispatch("addCard", data.replacement);
     }
   }
 });

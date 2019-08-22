@@ -27,31 +27,31 @@
             >
               <b-card-body>
                 <b-row>
-                  <b-col>
-                    <b-card-group columns>
-                      <template v-for="card in group.cards">
-                        <b-card
-                          v-bind:key="card.id"
-                          no-body
-                          :img-src="card.image_uris.normal"
-                          img-alt="Image"
-                          img-top
-                          class="p-1"
-                        >
-                          <b-card-body class="p-1">
-                            <b-button
-                              @click="remove(card.id, card.name)"
-                              class="d-print-none"
-                              variant="secondary"
-                              size="sm"
-                              block
-                              >Remove</b-button
-                            >
-                          </b-card-body>
-                        </b-card>
-                      </template>
-                    </b-card-group>
-                  </b-col>
+                  <template v-for="card in group.cards">
+                    <b-col v-bind:key="card.id" cols="3">
+                      <b-card
+                        no-body
+                        :img-src="card.image_uris.normal"
+                        img-alt="Image"
+                        img-top
+                        class="p-1"
+                      >
+                        <b-card-body class="p-1 text-center">
+                          <span v-if="card.prices.usd"
+                            >${{ card.prices.usd }}</span
+                          >
+                          <b-button
+                            @click="remove(card.id, card.name)"
+                            class="d-print-none"
+                            variant="link"
+                            size="sm"
+                            block
+                            >Remove</b-button
+                          >
+                        </b-card-body>
+                      </b-card>
+                    </b-col>
+                  </template>
                 </b-row>
               </b-card-body>
             </b-collapse>
@@ -61,7 +61,6 @@
     </b-row>
   </b-container>
 </template>
-
 <script>
 export default {
   name: "list",
@@ -76,18 +75,20 @@ export default {
 
       let list = [];
       for (const set of sets) {
-        var item = groups[set.code];
-        let value = {
-          cards:
+        let item = groups[set.code];
+        if (item.cards.length > 0) {
+          let collection = item.cards.slice();
+          let cards =
             types.length > 0
-              ? item.cards.filter(_ => types.includes(_.set_type))
-              : item.cards,
-          set: item.set
-        };
-        value.cards.sort((lhs, rhs) => {
-          return (lhs.collector_number = rhs.collector_number);
-        });
-        if (value.cards.length > 0) {
+              ? collection.filter(_ => types.includes(_.set_type))
+              : collection;
+          cards.sort((lhs, rhs) => {
+            return lhs.collector_number.localeCompare(rhs.collector_number);
+          });
+          let value = {
+            cards: cards,
+            set: item.set
+          };
           list.push(value);
         }
       }
@@ -104,7 +105,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .img-set {
   width: 32px;
