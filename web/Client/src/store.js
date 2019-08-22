@@ -104,13 +104,14 @@ const store = new Vuex.Store({
         return response.data;
       });
 
-      url = `https://api.scryfall.com/cards/search?q=!"${card.name}"&unique=prints`;
+      let name = card.name.replace(/[^A-Za-z0-9]/g, "");
+      let query = encodeURIComponent(name);
+      url = `https://api.scryfall.com/cards/search?q=!"${query}"&unique=prints`;
       var reprints = await axios.get(url).then(response => {
         return response.data.data;
       });
 
-      url =
-        "/api/StrictlyBetter/Obsoletes/?name=" + encodeURIComponent(card.name);
+      url = `/api/StrictlyBetter/Obsoletes/?name=${query}`;
       var upgrades = await axios.get(url).then(response => {
         return response.data.data;
       });

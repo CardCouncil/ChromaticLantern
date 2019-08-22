@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChromaticLantern.Controllers
@@ -21,8 +22,8 @@ namespace ChromaticLantern.Controllers
         public async Task<string> Obsoletes(string name)
         {
             var client = _clientFactory.CreateClient();
-
-            var url = "https://www.strictlybetter.eu/api/obsoletes/" + name ?? string.Empty;
+            var query = HttpUtility.UrlEncode(name);
+            var url = "https://www.strictlybetter.eu/api/obsoletes/" + query ?? string.Empty;
             var res = await client.GetStringAsync(url);
             return res;
         }

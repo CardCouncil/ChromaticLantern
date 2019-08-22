@@ -48,8 +48,11 @@ namespace ChromaticLantern
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseStatusCodePages();
+
+                // The default HSTS value is 30 days. 
+                // You may want to change this for production scenarios
+                // https://aka.ms/aspnetcore-hsts
                 app.UseHsts();
             }
 
@@ -67,12 +70,10 @@ namespace ChromaticLantern
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "Client";
-#if DEBUG
                 if (env.IsDevelopment())
                 {
                     spa.UseVueCli(npmScript: "serve", port: 8080); // optional port
                 }
-#endif
             });
         }
     }
