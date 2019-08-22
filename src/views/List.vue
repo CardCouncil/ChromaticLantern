@@ -84,6 +84,9 @@ export default {
               : item.cards,
           set: item.set
         };
+        value.cards.sort((lhs, rhs) => {
+          return (lhs.collector_number = rhs.collector_number);
+        });
         if (value.cards.length > 0) {
           list.push(value);
         }
