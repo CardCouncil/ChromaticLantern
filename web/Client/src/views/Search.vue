@@ -22,7 +22,7 @@
             </b-input-group-append>
           </b-input-group>
           <div class="text-center">
-            <b-link @click="toggle">Bluck</b-link>
+            <b-link @click="toggle">Bluk</b-link>
           </div>
         </div>
       </b-col>
