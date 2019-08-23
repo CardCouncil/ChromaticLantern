@@ -17,7 +17,9 @@
                   class="float-left img-set"
                 ></b-img>
                 <span>{{ group.set.name }}</span>
-                <small class="float-right">{{ group.set.released_at }}</small>
+                <small class="float-right"
+                  ><b-badge>{{ group.cards.length }}</b-badge></small
+                >
               </b-button>
             </b-card-header>
             <b-collapse
@@ -28,7 +30,14 @@
               <b-card-body>
                 <b-row>
                   <template v-for="card in group.cards">
-                    <b-col v-bind:key="card.id" cols="3">
+                    <b-col
+                      v-bind:key="card.id"
+                      cols="12"
+                      sm="12"
+                      md="6"
+                      lg="4"
+                      xl="3"
+                    >
                       <b-card
                         no-body
                         :img-src="card.image_uris.normal"
@@ -37,8 +46,8 @@
                         class="p-1"
                       >
                         <b-card-body class="p-1 text-center">
-                          <span v-if="card.prices.usd"
-                            >${{ card.prices.usd }}</span
+                          <b-badge v-if="card.prices.usd"
+                            >${{ card.prices.usd }}</b-badge
                           >
                           <b-button
                             @click="remove(card.id, card.name)"

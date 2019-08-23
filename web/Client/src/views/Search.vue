@@ -44,7 +44,7 @@
     <br />
     <b-row>
       <template v-for="card in deck">
-        <b-col v-bind:key="card.id" cols="3">
+        <b-col v-bind:key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
           <b-card
             no-body
             :img-src="card.image_uris.normal"
