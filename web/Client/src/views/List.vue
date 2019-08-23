@@ -76,12 +76,13 @@ export default {
       let list = [];
       for (const set of sets) {
         let item = groups[set.code];
-        if (item.cards.length > 0) {
-          let collection = item.cards.slice();
-          let cards =
-            types.length > 0
-              ? collection.filter(_ => types.includes(_.set_type))
-              : collection;
+        let collection = item.cards.slice();
+        let cards =
+          types.length > 0
+            ? collection.filter(_ => types.includes(_.set_type))
+            : collection;
+
+        if (cards.length > 0) {
           cards.sort((lhs, rhs) => {
             return lhs.collector_number.localeCompare(rhs.collector_number);
           });
