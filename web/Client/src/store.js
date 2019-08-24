@@ -7,7 +7,6 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    promo: [],
     sets: [],
     types: [],
     deck: [],
@@ -34,9 +33,6 @@ const store = new Vuex.Store({
     },
     loadGroups(state, groups) {
       state.groups = groups;
-    },
-    promo(state, data) {
-      state.promo = data;
     },
     clearDeck(state) {
       state.deck = [];
@@ -145,21 +141,6 @@ const store = new Vuex.Store({
       commit("clearDeck");
       commit("clearGroups");
     },
-    promo({ commit, state }) {
-      if (state.promo.length == 0) {
-        const api =
-          "https://api.scryfall.com/cards/search?q=Fireball&unique=prints&order=released&dir=asc";
-        axios
-          .get(api)
-          .then(response => {
-            return response.data.data;
-          })
-          .then(cards => {
-            var urls = cards.map(_ => _.image_uris.small);
-            commit("promo", urls);
-          });
-      }
-    },
     applyUpgrade({ commit, dispatch }, data) {
       commit("removeCard", data.original.name);
       commit("removeCards", data.original.name);
@@ -171,7 +152,6 @@ const store = new Vuex.Store({
 // Subscribe to store updates
 store.subscribe((mutation, state) => {
   let store = {
-    promo: state.promo,
     types: state.types,
     deck: state.deck,
     groups: state.groups
