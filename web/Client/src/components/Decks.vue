@@ -7,7 +7,7 @@
             <b-link @click="toggle">Single</b-link>
           </div>
           <b-input-group class="mt-3">
-            <b-form-textarea v-model="collection" rows="5"></b-form-textarea>
+            <b-form-textarea v-model="collection" rows="5" />
           </b-input-group>
           <br />
           <div class="text-center">
@@ -16,7 +16,7 @@
         </div>
         <div v-else>
           <b-input-group prepend="Scryfall Url" class="mt-3">
-            <b-form-input v-model="input" v-on:keyup.enter="add"></b-form-input>
+            <b-form-input v-model="input" v-on:keyup.enter="add" />
             <b-input-group-append>
               <b-button variant="outline-success" @click="add">Add</b-button>
             </b-input-group-append>
@@ -61,21 +61,24 @@
                       target="_blank"
                       variant="link"
                       size="sm"
-                      >Details</b-button
                     >
+                      Details
+                    </b-button>
                     <b-button
                       v-if="card.upgrades.length > 0"
+                      variant="link"
+                      size="sm"
                       @click="upgrade(card.upgrades)"
-                      variant="link"
-                      size="sm"
-                      >Upgrade</b-button
                     >
+                      Upgrade
+                    </b-button>
                     <b-button
-                      @click="remove(card.name)"
                       variant="link"
                       size="sm"
-                      >Remove</b-button
+                      @click="remove(card.name)"
                     >
+                      Remove
+                    </b-button>
                   </b-button-group>
                 </b-col>
               </b-row>
@@ -103,12 +106,12 @@
       <div class="d-block text-center">
         <h4>Loading Cards</h4>
         <div class="text-center">
-          <b-spinner label="Spinning"></b-spinner>
-          <b-spinner type="grow" label="Spinning"></b-spinner>
-          <b-spinner variant="primary" label="Spinning"></b-spinner>
-          <b-spinner variant="primary" type="grow" label="Spinning"></b-spinner>
-          <b-spinner variant="success" label="Spinning"></b-spinner>
-          <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+          <b-spinner label="Spinning" />
+          <b-spinner type="grow" label="Spinning" />
+          <b-spinner variant="primary" label="Spinning" />
+          <b-spinner variant="primary" type="grow" label="Spinning" />
+          <b-spinner variant="success" label="Spinning" />
+          <b-spinner variant="success" type="grow" label="Spinning" />
         </div>
         <p>Please Wait...</p>
       </div>
@@ -129,7 +132,8 @@
                   <b-row>
                     <b-col cols="12">
                       <span v-if="item.labels.more_colors">
-                        <img :src="require('@/assets/error.png')" /> More colors
+                        <img :src="require('@/assets/error.png')" />
+                        More colors
                       </span>
                       <span v-else>&nbsp;</span>
                     </b-col>
@@ -142,11 +146,12 @@
                           target="_blank"
                           variant="link"
                           size="sm"
-                          >Details</b-button
                         >
-                        <b-button @click="swap(item)" variant="link" size="sm"
-                          >Swap</b-button
-                        >
+                          Details
+                        </b-button>
+                        <b-button variant="link" size="sm" @click="swap(item)">
+                          Swap
+                        </b-button>
                       </b-button-group>
                     </b-col>
                   </b-row>
@@ -162,8 +167,9 @@
               <a
                 href="https://www.strictlybetter.eu/card?name=Arvad%20the%20Cursed"
                 target="_blank"
-                >Strictly Better</a
               >
+                Strictly Better
+              </a>
               to suggest one.
             </p>
           </b-col>
@@ -183,7 +189,7 @@ function decodeUrl(input) {
 
 function timer(seconds) {
   // eslint-disable-next-line
-        return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     setTimeout(function() {
       resolve();
     }, seconds * 1000);
@@ -200,13 +206,13 @@ export default {
       upgrades: []
     };
   },
-  mounted: function() {
-    this.$store.dispatch("load");
-  },
   computed: {
     deck: function() {
       return this.$store.state.deck;
     }
+  },
+  mounted: function() {
+    this.$store.dispatch("load");
   },
   methods: {
     add: function() {

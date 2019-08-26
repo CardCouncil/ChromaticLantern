@@ -15,7 +15,7 @@
             :options="options"
             switches
             stacked
-          ></b-form-checkbox-group>
+          />
         </b-form-group>
       </b-col>
     </b-row>
@@ -25,9 +25,6 @@
 <script>
 export default {
   name: "sets",
-  mounted: function() {
-    this.$store.dispatch("load");
-  },
   computed: {
     options: function() {
       return this.$store.getters.types;
@@ -40,6 +37,9 @@ export default {
         this.$store.commit("updateTypes", values);
       }
     }
+  },
+  mounted: function() {
+    this.$store.dispatch("load");
   }
 };
 </script>

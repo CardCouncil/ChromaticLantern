@@ -7,12 +7,12 @@
         you are searching for.
       </p>
       <h3>Take This...</h3>
-      <b-img :src="link"></b-img>
+      <b-img :src="link" />
       <h3>To This!</h3>
       <b-row>
         <template v-for="url in links">
-          <b-col cols="2" v-bind:key="url">
-            <b-img :src="url" fluid></b-img>
+          <b-col v-bind:key="url" cols="2">
+            <b-img :src="url" fluid />
           </b-col>
         </template>
       </b-row>
@@ -25,7 +25,8 @@ export default {
   name: "home",
   data: function() {
     return {
-      link: "https://img.scryfall.com/cards/small/front/f/6/f6a86f5d-cfbf-4d8e-9f8e-0f8288907396.jpg?1562666336",
+      link:
+        "https://img.scryfall.com/cards/small/front/f/6/f6a86f5d-cfbf-4d8e-9f8e-0f8288907396.jpg?1562666336",
       links: [
         "https://img.scryfall.com/cards/small/front/b/7/b7623c00-144b-4a8f-9c6c-f5e9e4f65ece.jpg?1559591696",
         "https://img.scryfall.com/cards/small/front/a/2/a285ab2e-836e-45b0-894e-574f733cf3db.jpg?1559591803",
@@ -55,7 +56,7 @@ export default {
         "https://img.scryfall.com/cards/small/front/4/7/4781099d-4ccc-4133-803e-bbd730395b8f.jpg?1562909890",
         "https://img.scryfall.com/cards/small/front/d/c/dcbdc3be-f187-4fb2-9506-06d5abc37785.jpg?1562378491",
         "https://img.scryfall.com/cards/small/front/1/9/195573be-2188-4526-8daf-13e871f24a21.jpg?1562543167",
-        "https://img.scryfall.com/cards/small/front/7/2/7220aaa0-c457-4067-b1ff-360b161c34e5.jpg?1562850134",
+        "https://img.scryfall.com/cards/small/front/7/2/7220aaa0-c457-4067-b1ff-360b161c34e5.jpg?1562850134"
       ]
     };
   }

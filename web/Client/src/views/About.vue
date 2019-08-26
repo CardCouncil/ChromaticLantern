@@ -1,3 +1,3 @@
 <template>
-  <b-container id="about"> </b-container>
+  <b-container id="about" />
 </template>
