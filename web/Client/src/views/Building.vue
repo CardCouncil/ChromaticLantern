@@ -16,7 +16,7 @@
       <hr />
       <b-row>
         <template v-for="card in deck.cards">
-          <b-col v-bind:key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+          <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
             <b-card
               no-body
               :img-src="card.image_uris.normal"
@@ -33,24 +33,21 @@
                         target="_blank"
                         variant="link"
                         size="sm"
+                        >Details</b-button
                       >
-                        Details
-                      </b-button>
                       <b-button
                         v-if="card.upgrades.length > 0"
                         variant="link"
                         size="sm"
                         @click="upgrade(card.upgrades)"
+                        >Upgrade</b-button
                       >
-                        Upgrade
-                      </b-button>
                       <b-button
                         variant="link"
                         size="sm"
                         @click="remove(card.name)"
+                        >Remove</b-button
                       >
-                        Remove
-                      </b-button>
                     </b-button-group>
                   </b-col>
                 </b-row>
@@ -70,7 +67,7 @@ import { mapGetters, mapState } from "vuex";
 import Search from "@/components/Search.vue";
 
 export default {
-  name: "building",
+  name: "Building",
   components: {
     Search
   },

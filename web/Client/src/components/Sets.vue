@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "sets",
+  name: "Sets",
   computed: {
     options: function() {
       return this.$store.getters.types;

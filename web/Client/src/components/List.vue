@@ -3,7 +3,7 @@
     <b-row role="tablist">
       <b-col>
         <template v-for="group in groups">
-          <b-card v-bind:key="group.set.code" no-body class="mb-1">
+          <b-card :key="group.set.code" no-body class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
               <b-button
                 v-b-toggle="'accordion-' + group.set.code"
@@ -31,7 +31,7 @@
                 <b-row>
                   <template v-for="card in group.cards">
                     <b-col
-                      v-bind:key="card.id"
+                      :key="card.id"
                       cols="12"
                       sm="12"
                       md="6"
@@ -73,7 +73,7 @@
 </template>
 <script>
 export default {
-  name: "list",
+  name: "List",
   computed: {
     groups: function() {
       let sets = this.$store.state.sets;

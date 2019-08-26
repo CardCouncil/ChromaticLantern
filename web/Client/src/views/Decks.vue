@@ -30,13 +30,13 @@
     <b-row>
       <b-col>
         <b-table striped hover caption-top :items="decks" :fields="fields">
-          <template slot-scope="data" slot="[type]">
+          <template slot="[type]" slot-scope="data">
             {{ types[data.value] }}
           </template>
-          <template slot-scope="row" slot="[cards]">
+          <template slot="[cards]" slot-scope="row">
             <b-badge>{{ row.item.cards.length }}</b-badge>
           </template>
-          <template slot-scope="row" slot="[actions]">
+          <template slot="[actions]" slot-scope="row">
             <b-button
               size="sm"
               class="mr-1"
@@ -71,7 +71,7 @@
 import { mapGetters, mapState } from "vuex";
 
 export default {
-  name: "decks",
+  name: "Decks",
   data: function() {
     return {
       form: {

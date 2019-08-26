@@ -11,7 +11,7 @@
       <h3>To This!</h3>
       <b-row>
         <template v-for="url in links">
-          <b-col v-bind:key="url" cols="2">
+          <b-col :key="url" cols="2">
             <b-img :src="url" fluid />
           </b-col>
         </template>
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: "home",
+  name: "Home",
   data: function() {
     return {
       link:

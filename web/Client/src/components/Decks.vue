@@ -16,7 +16,7 @@
         </div>
         <div v-else>
           <b-input-group prepend="Scryfall Url" class="mt-3">
-            <b-form-input v-model="input" v-on:keyup.enter="add" />
+            <b-form-input v-model="input" @keyup.enter="add" />
             <b-input-group-append>
               <b-button variant="outline-success" @click="add">Add</b-button>
             </b-input-group-append>
@@ -44,7 +44,7 @@
     <br />
     <b-row>
       <template v-for="card in deck">
-        <b-col v-bind:key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+        <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
           <b-card
             no-body
             :img-src="card.image_uris.normal"
@@ -120,7 +120,7 @@
       <div class="d-block text-center">
         <b-row v-if="upgrades.length > 0">
           <template v-for="item in upgrades">
-            <b-col v-bind:key="item.id" cols="3">
+            <b-col :key="item.id" cols="3">
               <b-card
                 no-body
                 :img-src="item.card.image_uris.normal"
@@ -197,7 +197,7 @@ function timer(seconds) {
 }
 
 export default {
-  name: "search",
+  name: "Search",
   data: function() {
     return {
       more: false,

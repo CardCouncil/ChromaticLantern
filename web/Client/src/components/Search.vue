@@ -110,10 +110,16 @@
 
 <script>
 export default {
-  name: "search",
+  name: "Search",
   props: {
-    format: String,
-    identity: String
+    format: {
+      type: String,
+      default: ""
+    },
+    identity: {
+      type: String,
+      default: ""
+    }
   },
   data: function() {
     return {
