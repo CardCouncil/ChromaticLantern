@@ -1,8 +1,8 @@
-import BuildingModule from './store/building';
-import SettingsModule from './store/settings';
-import Vue from 'vue';
-import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist';
+import BuildingModule from "./store/building";
+import SettingsModule from "./store/settings";
+import Vue from "vue";
+import Vuex from "vuex";
+import VuexPersistence from "vuex-persist";
 
 Vue.use(Vuex);
 
@@ -12,8 +12,8 @@ const store = new Vuex.Store({
   actions: {
     load({ dispatch }) {
       // Settings
-      dispatch('loadSets');
-      dispatch('loadTypes');
+      dispatch("loadSets");
+      dispatch("loadTypes");
     }
   },
   modules: {

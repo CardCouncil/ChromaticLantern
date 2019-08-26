@@ -1,5 +1,5 @@
-import axios from 'axios';
-import shortid from 'shortid';
+import axios from "axios";
+import shortid from "shortid";
 
 const BuildingModule = {
   state: {
@@ -9,22 +9,22 @@ const BuildingModule = {
     addDeck({ commit }, options) {
       let defaults = { id: shortid.generate(), cards: [] };
       let data = { ...defaults, ...options };
-      commit('addDeck', data);
+      commit("addDeck", data);
     },
     removeDeck({ commit }, options) {
       let data = { deck: options.deck.id };
-      commit('removeDeck', data);
+      commit("removeDeck", data);
     },
     clearDeck({ commit }, options) {
       let data = { deck: options.deck.id };
-      commit('clearDeck', data);
+      commit("clearDeck", data);
     },
     async addCard({ commit }, options) {
-      let url = '';
+      let url = "";
       let decks = options.decks;
       let card = options.card;
       // Get Card Reprints
-      let name = card.name.replace(/[^A-Za-z0-9]/g, '');
+      let name = card.name.replace(/[^A-Za-z0-9]/g, "");
       let query = encodeURIComponent(name);
       url = `https://api.scryfall.com/cards/search?q=!"${query}"&unique=prints`;
       let reprints = await axios.get(url).then(response => {
@@ -72,12 +72,12 @@ const BuildingModule = {
           reprints: reprints,
           upgrades: upgrades
         };
-        commit('addCard', data);
+        commit("addCard", data);
       }
     },
     removeCard({ commit }, options) {
       var data = { deck: options.deck.id, card: options.card.id };
-      commit('removeCard', data);
+      commit("removeCard", data);
     }
   },
   mutations: {
@@ -104,13 +104,13 @@ const BuildingModule = {
     // eslint-disable-next-line
     deckTypes: state => { 
       return {
-        commander: 'Commander',
-        duel: 'Duel Commander',
-        standard: 'Standard',
-        modern: 'Modern',
-        legacy: 'Legacy',
-        vintage: 'Vintage',
-        brawl: 'Brawl'
+        commander: "Commander",
+        duel: "Duel Commander",
+        standard: "Standard",
+        modern: "Modern",
+        legacy: "Legacy",
+        vintage: "Vintage",
+        brawl: "Brawl"
       };
     }
   }

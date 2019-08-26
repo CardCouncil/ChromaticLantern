@@ -16,7 +16,6 @@
 
           <label class="sr-only" for="inline-form-input-username">Name</label>
           <b-input v-model="form.name" required class="mb-2 mr-sm-2 mb-sm-0" placeholder="Name" />
-
           <b-button type="submit" variant="success">Add</b-button>
         </b-form>
       </b-col>
@@ -25,7 +24,9 @@
     <b-row>
       <b-col>
         <b-table striped hover caption-top :items="decks" :fields="fields">
-          <template slot="[type]" slot-scope="data">{{ types[data.value] }}</template>
+          <template slot="[type]" slot-scope="data">
+            {{ types[data.value] }}
+          </template>
           <template slot="[cards]" slot-scope="row">
             <b-badge>{{ row.item.cards.length }}</b-badge>
           </template>

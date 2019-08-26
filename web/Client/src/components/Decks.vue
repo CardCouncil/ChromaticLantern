@@ -44,7 +44,8 @@
     <br />
     <b-row>
       <template v-for="card in deck">
-        <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+        <b-col
+:key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
           <b-card
             no-body
             :img-src="card.image_uris.normal"
@@ -181,7 +182,7 @@
 <script>
 function decodeUrl(input) {
   const url = new URL(input);
-  const data = url.pathname.split('/');
+  const data = url.pathname.split("/");
   const code = data[2];
   const number = data[3];
   return { code, number };
@@ -197,12 +198,12 @@ function timer(seconds) {
 }
 
 export default {
-  name: 'Search',
+  name: "Search",
   data: function() {
     return {
       more: false,
-      input: '',
-      collection: '',
+      input: "",
+      collection: "",
       upgrades: []
     };
   },
@@ -212,39 +213,39 @@ export default {
     }
   },
   mounted: function() {
-    this.$store.dispatch('load');
+    this.$store.dispatch("load");
   },
   methods: {
     add: function() {
       let data = decodeUrl(this.input);
-      this.input = '';
-      this.$store.dispatch('addCard', data);
+      this.input = "";
+      this.$store.dispatch("addCard", data);
     },
     remove: function(name) {
-      this.$store.dispatch('removeCard', { name });
+      this.$store.dispatch("removeCard", { name });
     },
     clear: function() {
-      this.$store.dispatch('clear');
+      this.$store.dispatch("clear");
     },
     toggle: function() {
-      this.input = '';
-      this.collection = '';
+      this.input = "";
+      this.collection = "";
       this.more = !this.more;
-      this.$bvModal.hide('bv-modal-loading');
+      this.$bvModal.hide("bv-modal-loading");
     },
     bluck: async function() {
-      this.$bvModal.show('bv-modal-loading');
-      let lines = this.collection.split('\n').filter(_ => _ != '');
+      this.$bvModal.show("bv-modal-loading");
+      let lines = this.collection.split("\n").filter(_ => _ != "");
       for (const input of lines) {
         let data = decodeUrl(input);
-        this.$store.dispatch('addCard', data);
+        this.$store.dispatch("addCard", data);
         await timer(0.5);
       }
       this.toggle();
     },
     upgrade: function(upgrades) {
       this.upgrades = upgrades;
-      this.$bvModal.show('bv-modal-upgrades');
+      this.$bvModal.show("bv-modal-upgrades");
     },
     swap: function(item) {
       let data = {
@@ -256,8 +257,8 @@ export default {
           number: item.card.collector_number
         }
       };
-      this.$store.dispatch('applyUpgrade', data);
-      this.$bvModal.hide('bv-modal-upgrades');
+      this.$store.dispatch("applyUpgrade", data);
+      this.$bvModal.hide("bv-modal-upgrades");
     }
   }
 };

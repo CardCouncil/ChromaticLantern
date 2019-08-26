@@ -73,7 +73,7 @@
 </template>
 <script>
 export default {
-  name: 'List',
+  name: "List",
   computed: {
     groups: function() {
       let sets = this.$store.state.sets;
@@ -107,11 +107,11 @@ export default {
     }
   },
   mounted: function() {
-    this.$store.dispatch('load');
+    this.$store.dispatch("load");
   },
   methods: {
     remove: function(id, name) {
-      this.$store.dispatch('removeCard', { id, name });
+      this.$store.dispatch("removeCard", { id, name });
     }
   }
 };
