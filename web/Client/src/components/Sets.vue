@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: "Sets",
+  name: 'Sets',
   computed: {
     options: function() {
       return this.$store.getters.types;
@@ -34,12 +34,12 @@ export default {
         return this.$store.state.types;
       },
       set: function(values) {
-        this.$store.commit("updateTypes", values);
+        this.$store.commit('updateTypes', values);
       }
     }
   },
   mounted: function() {
-    this.$store.dispatch("load");
+    this.$store.dispatch('load');
   }
 };
 </script>

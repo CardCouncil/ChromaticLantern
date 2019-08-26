@@ -7,12 +7,8 @@
         </b-col>
         <b-col>
           <div class="text-right">
-            <b-button v-if="advanced" variant="primary" @click="toggle">
-              Simple
-            </b-button>
-            <b-button v-else variant="primary" @click="toggle">
-              Advanced
-            </b-button>
+            <b-button v-if="advanced" variant="primary" @click="toggle">Simple</b-button>
+            <b-button v-else variant="primary" @click="toggle">Advanced</b-button>
           </div>
         </b-col>
       </b-row>

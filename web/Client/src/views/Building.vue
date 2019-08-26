@@ -17,13 +17,7 @@
       <b-row>
         <template v-for="card in deck.cards">
           <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
-            <b-card
-              no-body
-              :img-src="card.image_uris.normal"
-              img-alt="Image"
-              img-top
-              class="p-1"
-            >
+            <b-card no-body :img-src="card.image_uris.normal" img-alt="Image" img-top class="p-1">
               <b-card-body class="p-1">
                 <b-row>
                   <b-col class="text-center">
@@ -33,21 +27,14 @@
                         target="_blank"
                         variant="link"
                         size="sm"
-                        >Details</b-button
-                      >
+                      >Details</b-button>
                       <b-button
                         v-if="card.upgrades.length > 0"
                         variant="link"
                         size="sm"
                         @click="upgrade(card.upgrades)"
-                        >Upgrade</b-button
-                      >
-                      <b-button
-                        variant="link"
-                        size="sm"
-                        @click="remove(card.name)"
-                        >Remove</b-button
-                      >
+                      >Upgrade</b-button>
+                      <b-button variant="link" size="sm" @click="remove(card.name)">Remove</b-button>
                     </b-button-group>
                   </b-col>
                 </b-row>
