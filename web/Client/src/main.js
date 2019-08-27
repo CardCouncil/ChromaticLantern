@@ -1,9 +1,13 @@
 import Vue from "vue";
-// Plugins
-import "./plugins/bootstrap-vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+
+// Plugins
+import "./plugins/bootstrap-vue";
+import "./plugins/icons-vue";
+import "./plugins/loading-vue";
+
 Vue.config.productionTip = false;
 
 new Vue({

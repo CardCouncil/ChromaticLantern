@@ -32,11 +32,7 @@
       <b-col>
         <div class="text-center">
           <router-link to="/list">
-            <b-button variant="success">
-              List
-            </b-button>
-          </router-link>
-          |
+            <b-button variant="success">List</b-button> </router-link>|
           <b-button @click="clear">Clear</b-button>
         </div>
       </b-col>
@@ -44,15 +40,13 @@
     <br />
     <b-row>
       <template v-for="card in deck">
-        <b-col
-:key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+        <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
           <b-card
             no-body
             :img-src="card.image_uris.normal"
             img-alt="Image"
             img-top
-            class="p-1"
-          >
+            class="p-1">
             <b-card-body class="p-1">
               <b-row>
                 <b-col class="text-center">
@@ -61,25 +55,16 @@
                       :href="card.scryfall_uri"
                       target="_blank"
                       variant="link"
-                      size="sm"
-                    >
-                      Details
-                    </b-button>
+                      size="sm">Details</b-button>
                     <b-button
                       v-if="card.upgrades.length > 0"
                       variant="link"
                       size="sm"
-                      @click="upgrade(card.upgrades)"
-                    >
-                      Upgrade
-                    </b-button>
+                      @click="upgrade(card.upgrades)">Upgrade</b-button>
                     <b-button
                       variant="link"
                       size="sm"
-                      @click="remove(card.name)"
-                    >
-                      Remove
-                    </b-button>
+                      @click="remove(card.name)">Remove</b-button>
                   </b-button-group>
                 </b-col>
               </b-row>
@@ -93,11 +78,7 @@
       <b-col>
         <div class="text-center">
           <router-link to="/list">
-            <b-button variant="success">
-              List
-            </b-button>
-          </router-link>
-          |
+            <b-button variant="success">List</b-button> </router-link>|
           <b-button @click="clear">Clear</b-button>
         </div>
       </b-col>
@@ -127,8 +108,7 @@
                 :img-src="item.card.image_uris.normal"
                 :img-alt="item.card.name"
                 img-top
-                class="p-1"
-              >
+                class="p-1">
                 <b-card-body class="p-1">
                   <b-row>
                     <b-col cols="12">
@@ -146,13 +126,8 @@
                           :href="item.card.scryfall_uri"
                           target="_blank"
                           variant="link"
-                          size="sm"
-                        >
-                          Details
-                        </b-button>
-                        <b-button variant="link" size="sm" @click="swap(item)">
-                          Swap
-                        </b-button>
+                          size="sm">Details</b-button>
+                        <b-button variant="link" size="sm" @click="swap(item)">Swap</b-button>
                       </b-button-group>
                     </b-col>
                   </b-row>
@@ -167,10 +142,7 @@
               No matches found. Head over to
               <a
                 href="https://www.strictlybetter.eu/card?name=Arvad%20the%20Cursed"
-                target="_blank"
-              >
-                Strictly Better
-              </a>
+                target="_blank">Strictly Better</a>
               to suggest one.
             </p>
           </b-col>

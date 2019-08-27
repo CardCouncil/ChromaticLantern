@@ -10,12 +10,10 @@
                 block
                 variant="link"
                 href="#"
-                style="line-height: 32px;"
-              >
+                style="line-height: 32px;">
                 <b-img
                   :src="group.set.icon_svg_uri"
-                  class="float-left img-set"
-                />
+                  class="float-left img-set"/>
                 <span>{{ group.set.name }}</span>
                 <small class="float-right">
                   <b-badge>{{ group.cards.length }}</b-badge>
@@ -25,8 +23,7 @@
             <b-collapse
               :id="'accordion-' + group.set.code"
               accordion="sets-accordion"
-              role="tabpanel"
-            >
+              role="tabpanel">
               <b-card-body>
                 <b-row>
                   <template v-for="card in group.cards">
@@ -36,28 +33,21 @@
                       sm="12"
                       md="6"
                       lg="4"
-                      xl="3"
-                    >
+                      xl="3">
                       <b-card
                         no-body
                         :img-src="card.image_uris.normal"
                         img-alt="Image"
                         img-top
-                        class="p-1"
-                      >
+                        class="p-1">
                         <b-card-body class="p-1 text-center">
-                          <b-badge v-if="card.prices.usd">
-                            ${{ card.prices.usd }}
-                          </b-badge>
+                          <b-badge v-if="card.prices.usd">${{ card.prices.usd }}</b-badge>
                           <b-button
                             class="d-print-none"
                             variant="link"
                             size="sm"
                             block
-                            @click="remove(card.id, card.name)"
-                          >
-                            Remove
-                          </b-button>
+                            @click="remove(card.id, card.name)">Remove</b-button>
                         </b-card-body>
                       </b-card>
                     </b-col>

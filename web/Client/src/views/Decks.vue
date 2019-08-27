@@ -9,13 +9,16 @@
             required
             class="mb-2 mr-sm-2 mb-sm-0"
             :value="null"
-            :options="types"
-          >
+            :options="types">
             <option slot="first" :value="null">Type...</option>
           </b-form-select>
 
           <label class="sr-only" for="inline-form-input-username">Name</label>
-          <b-input v-model="form.name" required class="mb-2 mr-sm-2 mb-sm-0" placeholder="Name" />
+          <b-input
+            v-model="form.name"
+            required
+            class="mb-2 mr-sm-2 mb-sm-0"
+            placeholder="Name"/>
           <b-button type="submit" variant="success">Add</b-button>
         </b-form>
       </b-col>
@@ -24,9 +27,9 @@
     <b-row>
       <b-col>
         <b-table striped hover caption-top :items="decks" :fields="fields">
-          <template slot="[type]" slot-scope="data">
-            {{ types[data.value] }}
-          </template>
+          <template slot="[type]" slot-scope="data">{{
+            types[data.value]
+          }}</template>
           <template slot="[cards]" slot-scope="row">
             <b-badge>{{ row.item.cards.length }}</b-badge>
           </template>
@@ -35,20 +38,20 @@
               size="sm"
               class="mr-1"
               variant="primary"
-              @click="buildDeck(row.item, row.index, $event.target)"
-            >Build</b-button>
+              @click="buildDeck(row.item, row.index, $event.target)">
+              Build</b-button>
             <b-button
               size="sm"
               class="mr-1"
               variant="warning"
-              @click="clearDeck(row.item, row.index, $event.target)"
-            >Clear</b-button>
+              @click="clearDeck(row.item, row.index, $event.target)">
+              Clear</b-button>
             <b-button
               size="sm"
               class="mr-1"
               variant="danger"
-              @click="removeDeck(row.item, row.index, $event.target)"
-            >Remove</b-button>
+              @click="removeDeck(row.item, row.index, $event.target)">
+              Remove</b-button>
           </template>
         </b-table>
       </b-col>

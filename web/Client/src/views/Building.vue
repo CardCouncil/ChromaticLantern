@@ -1,5 +1,6 @@
 <template>
   <b-container id="building">
+    <v-loading :active.sync="loading" :is-full-page="true"></v-loading>
     <div v-if="deck">
       <b-row>
         <b-col>
@@ -7,35 +8,52 @@
         </b-col>
         <b-col>
           <h2 class="text-right">
-            <b-badge>{{ getType(deck.type) }}</b-badge>
+            <b-badge variant="primary">{{ getType(deck.type) }}</b-badge>
           </h2>
         </b-col>
       </b-row>
       <hr />
-      <search />
+      <search v-on:selected="addCards" />
       <hr />
       <b-row>
-        <template v-for="card in deck.cards">
-          <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
-            <b-card no-body :img-src="card.image_uris.normal" img-alt="Image" img-top class="p-1">
+        <template v-for="item in cards">
+          <b-col :key="item.card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+            <b-card
+              no-body
+              :img-src="item.card.image_uris.normal"
+              img-alt="Image"
+              img-top
+              class="p-1 m-1">
               <b-card-body class="p-1">
                 <b-row>
                   <b-col class="text-center">
                     <b-button-group size="sm">
                       <b-button
-                        :href="card.scryfall_uri"
+                        :href="item.card.scryfall_uri"
                         target="_blank"
-                        variant="link"
+                        variant="secondary"
                         size="sm"
-                      >Details</b-button>
+                        title="Details">
+                          <v-icon name="info-circle" />
+                        </b-button>
                       <b-button
-                        v-if="card.upgrades.length > 0"
-                        variant="link"
+                        v-if="item.upgrades.length > 0"
+                        variant="secondary"
                         size="sm"
-                        @click="upgrade(card.upgrades)"
-                      >Upgrade</b-button>
-                      <b-button variant="link" size="sm" @click="remove(card.name)">Remove</b-button>
+                        @click="$bvModal.show('bm-upgrades-' + item.id)"
+                        title="Upgrade">
+                          <v-icon name="level-up-alt" />
+                        </b-button>
+                      <b-button
+                        variant="secondary"
+                        size="sm"
+                        @click="remove(item)"
+                        title="Remove">
+                          <v-icon name="times" />
+                        </b-button>
                     </b-button-group>
+
+                    <Upgrades :data="item" v-on:selected="swap"></Upgrades>
                   </b-col>
                 </b-row>
               </b-card-body>
@@ -47,40 +65,87 @@
     <div v-else>
       <span>Invalid Deck Id</span>
     </div>
+
   </b-container>
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
 import Search from "@/components/Search.vue";
+import Upgrades from "@/components/Upgrades.vue";
 
 export default {
   name: "Building",
   components: {
-    Search
+    Search,
+    Upgrades
   },
   data: function() {
-    return {};
+    return {
+      loading: false,
+      upgrades_show: false
+    };
   },
   computed: {
     ...mapState({
       deck(state) {
         return state.building.decks.find(_ => _.id == this.$route.params.id);
+      },
+      cards(state) {
+        let deck = state.building.decks.find(_ => _.id == this.$route.params.id);
+        return (deck) ? deck.cards : [];
       }
     }),
     ...mapGetters({
       types: "deckTypes"
     }),
     ...{
-      // add other computed properties here...
+      // 
     }
-  },
-  watch: {
-    // eslint-disable-next-line
-    $route(to, from) {}
   },
   methods: {
     getType(type) {
       return this.types[type];
+    },
+    addCards(cards) {
+      this.loading = true;
+
+      let data = { 
+        deck: this.deck.id,
+        cards: cards
+      };
+
+      let self = this;
+      this.$store.dispatch("addCards", data).then(() => {
+        self.loading = false;
+      });
+    },
+    upgrade(item) {
+      this.upgrades_selection = item;
+      this.upgrades_show = true;
+    },
+    remove(item) {
+      let data = { 
+        deck: this.deck.id,
+        card: item.card.id
+      };
+      this.$store.dispatch("removeCard", data);
+    },
+    swap(item) {
+      this.loading = true;
+      
+      let data = {
+        deck: this.deck.id,
+        original: item.original.id,
+        replacement: {
+          set: item.replacement.set,
+          collector_number: item.replacement.collector_number,
+        }
+      }
+
+      let self = this;
+      this.$store.dispatch("swapCards", data).then(() => {
+        self.loading = false;
+      });
     }
   }
 };
