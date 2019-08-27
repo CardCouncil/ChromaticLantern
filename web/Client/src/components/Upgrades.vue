@@ -1,16 +1,28 @@
 <template>
-  <b-modal :id="'bm-upgrades-' + data.id" size="xl" title="Upgrades" hide-footer>
+  <b-modal
+    :id="'bm-upgrades-' + data.id"
+    size="xl"
+    title="Upgrades"
+    hide-footer
+  >
     <div class="d-block text-center">
       <b-row v-if="data.upgrades.length > 0">
-
         <template v-for="card in data.upgrades">
-          <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+          <b-col
+            :key="card.id"
+            cols="12"
+            sm="12"
+            md="6"
+            lg="4"
+            xl="3"
+          >
             <b-card
               no-body
               :img-src="card.image_uris.normal"
               :img-alt="card.name"
               img-top
-              class="p-1">
+              class="p-1"
+            >
               <b-card-body class="p-1">
                 <b-row>
                   <b-col class="text-center">
@@ -20,15 +32,17 @@
                         target="_blank"
                         variant="secondary"
                         size="sm"
-                        title="Details">
-                          <v-icon name="info-circle"/>
+                        title="Details"
+                      >
+                        <v-icon name="info-circle" />
                       </b-button>
                       <b-button 
                         variant="secondary" 
                         size="sm" 
+                        title="Swap"
                         @click="select(card)"
-                        title="Swap">
-                          <v-icon name="exchange-alt"/>
+                      >
+                        <v-icon name="exchange-alt" />
                       </b-button>
                     </b-button-group>
                   </b-col>
@@ -37,13 +51,15 @@
             </b-card>
           </b-col>
         </template>
-
       </b-row>
       <b-row v-else>
         <b-col>
           <p>
             No matches found. Head over to
-            <a href="https://www.strictlybetter.eu/card?name=Arvad%20the%20Cursed" target="_blank">Strictly Better</a>
+            <a
+              href="https://www.strictlybetter.eu/card?name=Arvad%20the%20Cursed"
+              target="_blank"
+            >Strictly Better</a>
             to suggest one.
           </p>
         </b-col>
@@ -56,8 +72,14 @@
 export default {
   name: "Upgrades",
   props: {
-    data: Object,
-    show: Boolean,
+    data: {
+      type: Object,
+      default: null
+    },
+    show: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     select(item) {

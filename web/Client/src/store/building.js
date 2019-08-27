@@ -36,6 +36,7 @@ const BuildingModule = {
         let upgradeUrl = `/api/StrictlyBetter/Upgrades/?name=${card.name}`;
         var upgrades = await axios.get(upgradeUrl).then(response => {
           return (response.data) ? response.data.data : [];
+        // eslint-disable-next-line no-unused-vars
         }).catch(response => {
           return [];
         });

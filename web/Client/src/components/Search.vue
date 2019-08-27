@@ -1,6 +1,9 @@
 <template>
   <div class="search">
-    <v-loading :active.sync="loading" :is-full-page="true"></v-loading>
+    <v-loading
+      :active.sync="loading"
+      :is-full-page="true"
+    />
     <div>
       <b-row>
         <b-col>
@@ -9,14 +12,29 @@
         <b-col>
           <div class="text-right">
             <b-button-group>
-              <b-button @click="setType(0)"><v-icon name="edit" label="Simple"/></b-button>
-              <b-button @click="setType(1)"><v-icon name="search" label="Advanced"/></b-button>
-              <b-button @click="setType(2)"><v-icon name="upload" label="Import"/></b-button>
+              <b-button @click="setType(0)">
+                <v-icon
+                  name="edit"
+                  label="Simple"
+                />
+              </b-button>
+              <b-button @click="setType(1)">
+                <v-icon
+                  name="search"
+                  label="Advanced"
+                />
+              </b-button>
+              <b-button @click="setType(2)">
+                <v-icon
+                  name="upload"
+                  label="Import"
+                />
+              </b-button>
             </b-button-group>
           </div>
         </b-col>
       </b-row>
-      <br />
+      <br>
       <div v-if="search.type == 0">
         <b-row>
           <b-col>
@@ -25,10 +43,15 @@
                 <b-form-input
                   v-model="search.simple"
                   required
-                  placeholder="Card Name">
-                </b-form-input>
+                  placeholder="Card Name"
+                />
                 <b-input-group-append>
-                  <b-button type="submit" variant="success">Search</b-button>
+                  <b-button
+                    type="submit"
+                    variant="success"
+                  >
+                    Search
+                  </b-button>
                 </b-input-group-append>
               </b-input-group>
             </b-form>
@@ -106,7 +129,12 @@
           <b-row>
             <b-col />
             <b-col>
-              <b-button type="submit" variant="success">Search</b-button>
+              <b-button
+                type="submit"
+                variant="success"
+              >
+                Search
+              </b-button>
             </b-col>
           </b-row>
         </b-form>
@@ -119,28 +147,63 @@
                 v-model="search.bluk" 
                 rows="5"
                 required
-                placeholder="List of Scryfall Urls" />
-              <br />
+                placeholder="List of Scryfall Urls"
+              />
+              <br>
               <div class="text-center">
-                <b-button type="submit" variant="success">Import</b-button>
+                <b-button
+                  type="submit"
+                  variant="success"
+                >
+                  Import
+                </b-button>
               </div>
             </b-form>
           </b-col>
         </b-row>
       </div>
     </div>
-    <b-modal id="bv-modal-search-results" size="xl" title="Results" @ok="submitSelection" >
+    <b-modal
+      id="bv-modal-search-results"
+      size="xl"
+      title="Results"
+      @ok="submitSelection"
+    >
       <div class="d-block text-center">
         <b-row class="model-body-scrollable">
           <template v-for="card in cards">
-            <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
-              <div class="container" @click="selected(card)">
-                <v-icon v-if="isSelected(card)" name="check-square" class="centered-element text-success"/>
+            <b-col
+              :key="card.id"
+              cols="12"
+              sm="12"
+              md="6"
+              lg="4"
+              xl="3"
+            >
+              <div
+                class="container"
+                @click="selected(card)"
+              >
+                <v-icon
+                  v-if="isSelected(card)"
+                  name="check-square"
+                  class="centered-element text-success"
+                />
                 <div v-if="card.image_uris">
-                  <b-img :src="card.image_uris.normal" :title="card.name" fluid class="p-1"></b-img>
+                  <b-img
+                    :src="card.image_uris.normal"
+                    :title="card.name"
+                    fluid
+                    class="p-1"
+                  />
                 </div>
                 <div v-else>
-                  <b-img :src="card.card_faces[0].image_uris.normal" :title="card.name" fluid class="p-1"></b-img>
+                  <b-img
+                    :src="card.card_faces[0].image_uris.normal"
+                    :title="card.name"
+                    fluid
+                    class="p-1"
+                  />
                 </div>
               </div>
             </b-col>
@@ -199,6 +262,7 @@ export default {
         this.cards = data;
         this.loading = false;
         this.$bvModal.show("bv-modal-search-results");
+      // eslint-disable-next-line no-unused-vars
       }).catch(err => {
         this.loading = false;
       });
@@ -231,7 +295,7 @@ export default {
         this.selection.push(card.id);
       }
     },
-    submitSelection(evt) {
+    submitSelection() {
       let cards = this.cards
         .filter(_ => this.selection.includes( _.id))
         .map(_ => { 

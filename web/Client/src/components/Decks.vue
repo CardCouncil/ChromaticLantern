@@ -4,49 +4,85 @@
       <b-col>
         <div v-if="more">
           <div class="text-center">
-            <b-link @click="toggle">Single</b-link>
+            <b-link @click="toggle">
+              Single
+            </b-link>
           </div>
           <b-input-group class="mt-3">
-            <b-form-textarea v-model="collection" rows="5" />
+            <b-form-textarea
+              v-model="collection"
+              rows="5"
+            />
           </b-input-group>
-          <br />
+          <br>
           <div class="text-center">
-            <b-button variant="outline-success" @click="bluck">Import</b-button>
+            <b-button
+              variant="outline-success"
+              @click="bluck"
+            >
+              Import
+            </b-button>
           </div>
         </div>
         <div v-else>
-          <b-input-group prepend="Scryfall Url" class="mt-3">
-            <b-form-input v-model="input" @keyup.enter="add" />
+          <b-input-group
+            prepend="Scryfall Url"
+            class="mt-3"
+          >
+            <b-form-input
+              v-model="input"
+              @keyup.enter="add"
+            />
             <b-input-group-append>
-              <b-button variant="outline-success" @click="add">Add</b-button>
+              <b-button
+                variant="outline-success"
+                @click="add"
+              >
+                Add
+              </b-button>
             </b-input-group-append>
           </b-input-group>
           <div class="text-center">
-            <b-link @click="toggle">Bluk</b-link>
+            <b-link @click="toggle">
+              Bluk
+            </b-link>
           </div>
         </div>
       </b-col>
     </b-row>
-    <br />
+    <br>
     <b-row v-if="deck.length > 0">
       <b-col>
         <div class="text-center">
           <router-link to="/list">
-            <b-button variant="success">List</b-button> </router-link>|
-          <b-button @click="clear">Clear</b-button>
+            <b-button variant="success">
+              List
+            </b-button>
+          </router-link>|
+          <b-button @click="clear">
+            Clear
+          </b-button>
         </div>
       </b-col>
     </b-row>
-    <br />
+    <br>
     <b-row>
       <template v-for="card in deck">
-        <b-col :key="card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+        <b-col
+          :key="card.id"
+          cols="12"
+          sm="12"
+          md="6"
+          lg="4"
+          xl="3"
+        >
           <b-card
             no-body
             :img-src="card.image_uris.normal"
             img-alt="Image"
             img-top
-            class="p-1">
+            class="p-1"
+          >
             <b-card-body class="p-1">
               <b-row>
                 <b-col class="text-center">
@@ -55,16 +91,25 @@
                       :href="card.scryfall_uri"
                       target="_blank"
                       variant="link"
-                      size="sm">Details</b-button>
+                      size="sm"
+                    >
+                      Details
+                    </b-button>
                     <b-button
                       v-if="card.upgrades.length > 0"
                       variant="link"
                       size="sm"
-                      @click="upgrade(card.upgrades)">Upgrade</b-button>
+                      @click="upgrade(card.upgrades)"
+                    >
+                      Upgrade
+                    </b-button>
                     <b-button
                       variant="link"
                       size="sm"
-                      @click="remove(card.name)">Remove</b-button>
+                      @click="remove(card.name)"
+                    >
+                      Remove
+                    </b-button>
                   </b-button-group>
                 </b-col>
               </b-row>
@@ -73,47 +118,83 @@
         </b-col>
       </template>
     </b-row>
-    <br />
+    <br>
     <b-row v-if="deck.length > 0">
       <b-col>
         <div class="text-center">
           <router-link to="/list">
-            <b-button variant="success">List</b-button> </router-link>|
-          <b-button @click="clear">Clear</b-button>
+            <b-button variant="success">
+              List
+            </b-button>
+          </router-link>|
+          <b-button @click="clear">
+            Clear
+          </b-button>
         </div>
       </b-col>
     </b-row>
-    <br />
-    <b-modal id="bv-modal-loading" static hide-header hide-footer>
+    <br>
+    <b-modal
+      id="bv-modal-loading"
+      static
+      hide-header
+      hide-footer
+    >
       <div class="d-block text-center">
         <h4>Loading Cards</h4>
         <div class="text-center">
           <b-spinner label="Spinning" />
-          <b-spinner type="grow" label="Spinning" />
-          <b-spinner variant="primary" label="Spinning" />
-          <b-spinner variant="primary" type="grow" label="Spinning" />
-          <b-spinner variant="success" label="Spinning" />
-          <b-spinner variant="success" type="grow" label="Spinning" />
+          <b-spinner
+            type="grow"
+            label="Spinning"
+          />
+          <b-spinner
+            variant="primary"
+            label="Spinning"
+          />
+          <b-spinner
+            variant="primary"
+            type="grow"
+            label="Spinning"
+          />
+          <b-spinner
+            variant="success"
+            label="Spinning"
+          />
+          <b-spinner
+            variant="success"
+            type="grow"
+            label="Spinning"
+          />
         </div>
         <p>Please Wait...</p>
       </div>
     </b-modal>
-    <b-modal id="bv-modal-upgrades" size="lg" title="Upgrades" hide-footer>
+    <b-modal
+      id="bv-modal-upgrades"
+      size="lg"
+      title="Upgrades"
+      hide-footer
+    >
       <div class="d-block text-center">
         <b-row v-if="upgrades.length > 0">
           <template v-for="item in upgrades">
-            <b-col :key="item.id" cols="3">
+            <b-col
+              :key="item.id"
+              cols="3"
+            >
               <b-card
                 no-body
                 :img-src="item.card.image_uris.normal"
                 :img-alt="item.card.name"
                 img-top
-                class="p-1">
+                class="p-1"
+              >
                 <b-card-body class="p-1">
                   <b-row>
                     <b-col cols="12">
                       <span v-if="item.labels.more_colors">
-                        <img :src="require('@/assets/error.png')" />
+                        <img :src="require('@/assets/error.png')">
                         More colors
                       </span>
                       <span v-else>&nbsp;</span>
@@ -126,8 +207,17 @@
                           :href="item.card.scryfall_uri"
                           target="_blank"
                           variant="link"
-                          size="sm">Details</b-button>
-                        <b-button variant="link" size="sm" @click="swap(item)">Swap</b-button>
+                          size="sm"
+                        >
+                          Details
+                        </b-button>
+                        <b-button
+                          variant="link"
+                          size="sm"
+                          @click="swap(item)"
+                        >
+                          Swap
+                        </b-button>
                       </b-button-group>
                     </b-col>
                   </b-row>
@@ -142,7 +232,8 @@
               No matches found. Head over to
               <a
                 href="https://www.strictlybetter.eu/card?name=Arvad%20the%20Cursed"
-                target="_blank">Strictly Better</a>
+                target="_blank"
+              >Strictly Better</a>
               to suggest one.
             </p>
           </b-col>

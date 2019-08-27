@@ -14,7 +14,8 @@
             v-model="selected"
             :options="options"
             switches
-            stacked/>
+            stacked
+          />
         </b-form-group>
       </b-col>
     </b-row>

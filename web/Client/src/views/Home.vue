@@ -11,8 +11,14 @@
       <h3>To This!</h3>
       <b-row>
         <template v-for="url in links">
-          <b-col :key="url" cols="2">
-            <b-img :src="url" fluid />
+          <b-col
+            :key="url"
+            cols="2"
+          >
+            <b-img
+              :src="url"
+              fluid
+            />
           </b-col>
         </template>
       </b-row>

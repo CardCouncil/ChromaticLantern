@@ -1,6 +1,9 @@
 <template>
   <b-container id="building">
-    <v-loading :active.sync="loading" :is-full-page="true"></v-loading>
+    <v-loading
+      :active.sync="loading"
+      :is-full-page="true"
+    />
     <div v-if="deck">
       <b-row>
         <b-col>
@@ -8,22 +11,32 @@
         </b-col>
         <b-col>
           <h2 class="text-right">
-            <b-badge variant="primary">{{ getType(deck.type) }}</b-badge>
+            <b-badge variant="primary">
+              {{ getType(deck.type) }}
+            </b-badge>
           </h2>
         </b-col>
       </b-row>
-      <hr />
-      <search v-on:selected="addCards" />
-      <hr />
+      <hr>
+      <search @selected="addCards" />
+      <hr>
       <b-row>
         <template v-for="item in cards">
-          <b-col :key="item.card.id" cols="12" sm="12" md="6" lg="4" xl="3">
+          <b-col
+            :key="item.card.id"
+            cols="12"
+            sm="12"
+            md="6"
+            lg="4"
+            xl="3"
+          >
             <b-card
               no-body
               :img-src="item.card.image_uris.normal"
               img-alt="Image"
               img-top
-              class="p-1 m-1">
+              class="p-1 m-1"
+            >
               <b-card-body class="p-1">
                 <b-row>
                   <b-col class="text-center">
@@ -33,27 +46,33 @@
                         target="_blank"
                         variant="secondary"
                         size="sm"
-                        title="Details">
-                          <v-icon name="info-circle" />
-                        </b-button>
+                        title="Details"
+                      >
+                        <v-icon name="info-circle" />
+                      </b-button>
                       <b-button
                         v-if="item.upgrades.length > 0"
                         variant="secondary"
                         size="sm"
+                        title="Upgrade"
                         @click="$bvModal.show('bm-upgrades-' + item.id)"
-                        title="Upgrade">
-                          <v-icon name="level-up-alt" />
-                        </b-button>
+                      >
+                        <v-icon name="level-up-alt" />
+                      </b-button>
                       <b-button
                         variant="secondary"
                         size="sm"
+                        title="Remove"
                         @click="remove(item)"
-                        title="Remove">
-                          <v-icon name="times" />
-                        </b-button>
+                      >
+                        <v-icon name="times" />
+                      </b-button>
                     </b-button-group>
 
-                    <Upgrades :data="item" v-on:selected="swap"></Upgrades>
+                    <Upgrades
+                      :data="item"
+                      @selected="swap"
+                    />
                   </b-col>
                 </b-row>
               </b-card-body>
@@ -65,7 +84,6 @@
     <div v-else>
       <span>Invalid Deck Id</span>
     </div>
-
   </b-container>
 </template>
 <script>
