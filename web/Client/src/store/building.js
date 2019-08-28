@@ -7,7 +7,12 @@ const BuildingModule = {
   },
   actions: {
     addDeck({ commit }, options) {
-      let defaults = { id: shortid.generate(), cards: [] };
+      let defaults = { 
+        id: shortid.generate(),
+        identity: [],
+        general: null,
+        cards: []
+      };
       let data = { ...defaults, ...options };
       commit("addDeck", data);
     },
@@ -18,6 +23,10 @@ const BuildingModule = {
     clearDeck({ commit }, options) {
       let data = { deck: options.deck.id };
       commit("clearDeck", data);
+    },
+    editDeck({ commit }, options) {
+      let data = { ...options };
+      commit("editDeck", data);
     },
     async addCards({ commit }, options) {
       let cards = [];
@@ -37,13 +46,15 @@ const BuildingModule = {
         var upgrades = await axios.get(upgradeUrl).then(response => {
           return (response.data) ? response.data.data : [];
         // eslint-disable-next-line no-unused-vars
-        }).catch(response => {
+        }).catch(_ => {
           return [];
         });
 
         var item = {
           id: shortid.generate(),
           card: card,
+          target: 1,
+          found: 0,
           has_reprints: reprints.length > 0,
           reprints: reprints,
           has_upgrades: upgrades.length > 0,
@@ -62,23 +73,39 @@ const BuildingModule = {
     removeCard({ commit }, options) {
       var data = { 
         deck: options.deck, 
-        card: options.card 
+        item: options.item 
       };
       commit("removeCard", data);
     },
-    swapCards({ dispatch }, options) {
+    async swapCards({ dispatch }, options) {
       let removeOptions = { 
         deck: options.deck, 
         card: options.original 
       };
-      dispatch('removeCard', removeOptions);
+      await dispatch('removeCard', removeOptions);
 
       let addOptions = { 
         deck: options.deck,
         cards: [options.replacement]
       };
-      dispatch('addCards', addOptions);
-    }
+      await dispatch('addCards', addOptions);
+    },
+    addCopy({ commit }, options) {
+      var data = { 
+        deck: options.deck, 
+        item: options.item,
+        amount: 1
+      };
+      commit("updateTarget", data);
+    },
+    removeCopy({ commit }, options) {
+      var data = { 
+        deck: options.deck, 
+        item: options.item,
+        amount: -1
+      };
+      commit("updateTarget", data);
+    },
   },
   mutations: {
     addDeck(state, data) {
@@ -90,6 +117,15 @@ const BuildingModule = {
     clearDeck(state, data) {
       let deck = state.decks.find(_ => _.id == data.deck);
       deck.cards = [];
+      deck.general = null;
+      deck.identity = [];
+    },
+    editDeck(state, data) {
+      let deck = state.decks.find(_ => _.id == data.id);
+      deck.name = data.name;
+      deck.type = data.type;
+      deck.identity = data.identity;
+      deck.general = data.general;
     },
     addCards(state, data) {
       let deck = state.decks.find(_ => _.id == data.deck);
@@ -98,8 +134,13 @@ const BuildingModule = {
     },
     removeCard(state, data) {
       let deck = state.decks.find(_ => _.id == data.deck);
-      deck.cards = deck.cards.filter(_ => _.card.id != data.card);
+      deck.cards = deck.cards.filter(_ => _.id != data.item);
       deck.cards.sort(function(lhs, rhs) { return lhs.card.collector_number - rhs.card.collector_number; });
+    },
+    updateTarget(state, data) {
+      let deck = state.decks.find(_ => _.id == data.deck);
+      let item = deck.cards.find(_ => _.id == data.item);
+      item.target = item.target + data.amount;
     }
   },
   getters: {

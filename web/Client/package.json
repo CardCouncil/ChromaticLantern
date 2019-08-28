@@ -12,6 +12,7 @@
     "bootstrap-vue": "^2.0.0-rc.19",
     "core-js": "^2.6.5",
     "local-storage": "^2.0.0",
+    "mana-font": "^1.4.1",
     "shortid": "^2.2.14",
     "vue": "^2.6.10",
     "vue-awesome": "^3.5.4",
