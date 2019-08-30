@@ -48,8 +48,8 @@
                       </b-button>
                       <b-button 
                         v-if="canGeneral(item)"
-                        variant="secondary" 
                         title="Prompt"
+                        :variant="isGeneral(item) ? 'success' : 'secondary'"
                         @click="prompt(item)">
                         <v-icon name="crown" />
                       </b-button>
@@ -156,7 +156,8 @@ export default {
 
       if(item.target == 1) {
         let msg = "Are you sure you want to remove this card?";
-        this.$bvModal.msgBoxConfirm(msg).then(value => {
+        let options = { title: "Confirm", size: "lg", centered: true }
+        this.$bvModal.msgBoxConfirm(msg, options).then(value => {
           if(value) {
             this.$store.dispatch("removeCard", data);
           }
@@ -184,6 +185,13 @@ export default {
       if(supported.includes(this.deck.type)) {
         return item.card.type_line.includes("Legendary") && item.card.type_line.includes("Creature");
       } else{
+        return false;
+      }
+    },
+    isGeneral(item) {
+      if(this.deck.general) {
+        return item.card.id == this.deck.general;
+      } else {
         return false;
       }
     },

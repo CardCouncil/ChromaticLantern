@@ -1,4 +1,6 @@
 <template>
+<!-- http://geekandsundry.com/wp-content/uploads/2018/08/Screenshot-2018-08-01-20.16.36.png -->
+<!-- https://dotesports-media.nyc3.cdn.digitaloceanspaces.com/wp-content/uploads/2019/04/12125716/Singleton-Deck-Guide-Mana-Curve-MTG-Arena.jpg -->
   <div v-if="deck" class="shadow p-3 mb-4 bg-white rounded">
     <b-row v-if="editing">
       <b-col>
@@ -28,6 +30,7 @@
       </b-col>
     </b-row>
     <b-row v-else>
+      <!--
       <b-col>
         <h4>Deck Summary</h4>
         <b-table-simple small caption-top>
@@ -53,10 +56,10 @@
               </b-tr>
               <b-tr>
                 <b-td>Cards</b-td>
-                <b-td>{{ deck.cards.length }}</b-td>
+                <b-td>{{ deck.cards.length }} </b-td>
               </b-tr>
               <b-tr>
-                <b-td>Price (US)</b-td>
+                <b-td>Est. Cost (US)</b-td>
                 <b-td>${{ totalCost }}</b-td>
               </b-tr>
            </b-tbody>
@@ -104,6 +107,11 @@
           </b-tbody>
         </b-table-simple>
       </b-col>
+      -->
+      <b-col>
+        <h1>{{deck.name}}</h1>
+        <b-img fluid src="https://dotesports-media.nyc3.cdn.digitaloceanspaces.com/wp-content/uploads/2019/04/12125716/Singleton-Deck-Guide-Mana-Curve-MTG-Arena.jpg" />
+      </b-col>
       <b-col cols="1">
         <div class="text-right">
           <b-button-group vertical>
@@ -125,35 +133,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-
-function checkColor(state, id, symbol) {
-  let deck = state.building.decks.find(_ => _.id == id);
-  if(deck) {
-    let cost = deck.cards
-      .map(_ => (_.card.mana_cost.match(symbol) || []).length)
-      .reduce((state, value) => state + value, 0);
-    return cost;
-  } else {
-    return 0;
-  }
-}
-
-function countColorless(state, id) {
-  let deck = state.building.decks.find(_ => _.id == id);
-  if(deck) {
-    let cost = deck.cards
-      .map(_ => {
-        let regx = /{(\d*?)}/g;
-        let matches = regx.exec( _.card.mana_cost);
-        return (matches) ? parseInt(matches[1]) : 0;
-      })
-      .reduce((state, value) => state + value, 0);
-      
-    return cost;
-  } else {
-    return 0;
-  }
-}
+import { checkColor, countColorless, exportDeck } from "@/utilities/deck";
 
 export default {
   name: "Deck",
@@ -179,6 +159,19 @@ export default {
         } else {
           return false;
         }
+      },
+      deckLimit() {
+        // TODO: min for standard 
+        /*
+        let deck = state.building.decks.find(_ => _.id == this.$route.params.id);
+        if(deck) {
+          if(deck.type == "commander" || deck.type == "duel") {
+
+          }
+        } else {
+          return 0;
+        }
+        */
       },
       generalImage(state) {
         let deck = state.building.decks.find(_ => _.id == this.$route.params.id);
@@ -250,10 +243,17 @@ export default {
       });
     },
     share() {
-      // TODO: create deck code to share with others
-      let msg = `Deck Code...`;
-      let options = { title: "Share", size: "lg", centered: true };
-      this.$bvModal.msgBoxOk(msg, options);
+      let data = exportDeck(this.deck);
+      let url = `${window.location.host}/#/import/?d=${data}`;
+      navigator.clipboard.writeText(url);
+      let options = {
+        title: "Success",
+        autoHideDelay: 5000,
+        appendToast: true,
+        variant: 'success'
+      };
+      let msg = `Deck Code Copied to Clipboard`;
+      this.$bvToast.toast(msg, options);
     },
     cancel(evt) {
       evt.preventDefault();

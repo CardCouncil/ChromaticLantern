@@ -26,6 +26,9 @@
         <b-row>
           <b-col>
             <b-form @submit="findSimple">
+              <b-form-checkbox v-model="override" name="check-override" switch>
+                Override Deck Constraints
+              </b-form-checkbox>
               <b-input-group class="mt-3">
                 <b-form-input v-model="search.simple" required placeholder="Card Name" />
                 <b-input-group-append>
@@ -38,6 +41,7 @@
       </div>
       <div v-if="search.type == 1">
         <b-form @submit="findAdvanced">
+          <p>Advanced Search Options coming soon...</p>
           <!-- 
             -we need name
             -we need text, i would like a word order matters check box
@@ -133,6 +137,7 @@ export default {
   data: function() {
     return {
       loading: false,
+      override: false,
       search: {
         type: 0,
         simple: "",
@@ -156,11 +161,13 @@ export default {
 
       let name = encodeURIComponent(this.search.simple);
       let query = `name:"${name}"`;
-      if (this.format) {
-        query += ` format:${this.format}`;
-      }
-      if (this.identity.length > 0) {
-        query += ` identity:${this.identity.join("")}`;
+      if(!this.override) {
+        if (this.format) {
+          query += ` format:${this.format}`;
+        }
+        if (this.identity.length > 0) {
+          query += ` identity:${this.identity.join("")}`;
+        }
       }
 
       let url = `https://api.scryfall.com/cards/search?q=${query}`;
@@ -170,15 +177,21 @@ export default {
           return response.data.data;
         })
         .then(data => {
-          this.cards = data;
           this.loading = false;
-          this.$bvModal.show("bv-modal-search-results");
-          
+          this.cards = data;
+
+          if(data.length == 1) {
+            this.selection.push(data[0].id);
+            this.submitSelection();
+          } else {
+            this.$bvModal.show("bv-modal-search-results");
+          }
         })
         // eslint-disable-next-line 
         .catch(err => {
-          // TODO: Add button to re-seach with out filters
-          let msg = `No results found with the current format of '${this.format}', identity of '${this.identity.join()}' and query of '${this.search.simple}'.`;
+          let msg = (this.override) ? 
+            `No results found with the current query of '${this.search.simple}'.` :
+            `No results found with the current format of '${this.format}', identity of '${this.identity.join()}' and query of '${this.search.simple}'.` ; 
           let options = { title: "Error", size: "lg", centered: true };
           this.$bvModal.msgBoxOk(msg, options);
           this.loading = false;

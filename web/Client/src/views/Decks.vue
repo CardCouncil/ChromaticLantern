@@ -104,8 +104,8 @@ export default {
       let data = { deck: item };
       this.$store.dispatch("removeDeck", data);
     },
-    buildDeck(item) {
-      this.$router.push({ name: "building", params: { id: item.id } });
+    async buildDeck(item) {
+      await this.$router.push({ name: "building", params: { id: item.id } });
     }
   }
 };

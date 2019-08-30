@@ -53,7 +53,7 @@ const BuildingModule = {
         var item = {
           id: shortid.generate(),
           card: card,
-          target: 1,
+          target: key.amount ? key.amount : 1,
           found: 0,
           has_reprints: reprints.length > 0,
           reprints: reprints,
