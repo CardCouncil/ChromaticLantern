@@ -1,6 +1,4 @@
 <template>
-<!-- http://geekandsundry.com/wp-content/uploads/2018/08/Screenshot-2018-08-01-20.16.36.png -->
-<!-- https://dotesports-media.nyc3.cdn.digitaloceanspaces.com/wp-content/uploads/2019/04/12125716/Singleton-Deck-Guide-Mana-Curve-MTG-Arena.jpg -->
   <div v-if="deck" class="shadow p-3 mb-4 bg-white rounded">
     <b-row v-if="editing">
       <b-col>
@@ -30,87 +28,113 @@
       </b-col>
     </b-row>
     <b-row v-else>
-      <!--
-      <b-col>
-        <h4>Deck Summary</h4>
-        <b-table-simple small caption-top>
-           <b-tbody>
-              <b-tr>
-                <b-td>Name</b-td>
-                <b-td>{{ deck.name }}</b-td>
-              </b-tr>
-              <b-tr>
-                <b-td>Type</b-td>
-                <b-td>{{ getType(deck.type) }}</b-td>
-              </b-tr>
-              <b-tr v-if="deck.identity.length > 0">
-                <b-td>Identity</b-td>
-                <b-td>
-                  <i v-if="deck.identity.includes('W')" class="ms-cost ms ms-w "></i>
-                  <i v-if="deck.identity.includes('U')" class="ms-cost ms ms-u "></i>
-                  <i v-if="deck.identity.includes('B')" class="ms-cost ms ms-b "></i>
-                  <i v-if="deck.identity.includes('R')" class="ms-cost ms ms-r "></i>
-                  <i v-if="deck.identity.includes('G')" class="ms-cost ms ms-g "></i>
-                  <i v-if="deck.identity.includes('C')" class="ms-cost ms ms-c "></i>
-                </b-td>
-              </b-tr>
-              <b-tr>
-                <b-td>Cards</b-td>
-                <b-td>{{ deck.cards.length }} </b-td>
-              </b-tr>
-              <b-tr>
-                <b-td>Est. Cost (US)</b-td>
-                <b-td>${{ totalCost }}</b-td>
-              </b-tr>
-           </b-tbody>
-        </b-table-simple>
-      </b-col>
-      <b-col v-if="isComamander">
-        <h4>Commander</h4>
-        <b-img v-if="deck.general" :src="generalImage" fluid></b-img>
-        <b-img v-else src="https://img.scryfall.com/errors/missing.jpg" width="146" height="204"></b-img>
-      </b-col>
-      <b-col>
-        <h4>Mana</h4>
-        <b-table-simple small caption-top>
-          <b-thead>
-            <b-tr>
-              <b-th>
-                <i class="ms-cost ms ms-w "></i>
-              </b-th>
-              <b-th>
-                <i class="ms-cost ms ms-u "></i>
-              </b-th>
-              <b-th>
-                <i class="ms-cost ms ms-b "></i>
-              </b-th>
-              <b-th>
-                <i class="ms-cost ms ms-r "></i>
-              </b-th>
-              <b-th>
-                <i class="ms-cost ms ms-g "></i>
-              </b-th>
-               <b-th>
-                <i class="ms-cost ms ms-c "></i>
-              </b-th>
-            </b-tr>
-          </b-thead>
-          <b-tbody>
-            <b-tr>
-              <b-td>{{manaCountWhite}}</b-td>
-              <b-td>{{manaCountBlue}}</b-td>
-              <b-td>{{manaCountBlack}}</b-td>
-              <b-td>{{manaCountRed}}</b-td>
-              <b-td>{{manaCountGreen}}</b-td>
-              <b-td>{{manaCountColorless}}</b-td>
-            </b-tr>
-          </b-tbody>
-        </b-table-simple>
-      </b-col>
-      -->
       <b-col>
         <h1>{{deck.name}}</h1>
-        <b-img fluid src="https://dotesports-media.nyc3.cdn.digitaloceanspaces.com/wp-content/uploads/2019/04/12125716/Singleton-Deck-Guide-Mana-Curve-MTG-Arena.jpg" />
+        <b-row>
+          <b-col>
+            <h3>Mana</h3>
+             <b-table-simple small>
+               <b-tr>
+                 <b-td>Indenity</b-td>
+                 <b-td>
+                    <ColorIndenity :identity="deck.identity" />
+                 </b-td>
+               </b-tr>
+               <b-tr>
+                 <b-td>Average</b-td>
+                 <b-td>{{avgCMC}}</b-td>
+               </b-tr>
+               <b-tr>
+                 <b-td>Curve</b-td>
+                 <b-td></b-td>
+               </b-tr>
+             </b-table-simple>
+             <trend
+              :data="[0, 2, 5, 9, 5, 10, 3]"
+              :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
+              :height="100"
+              auto-draw
+              smooth />
+            <b-table-simple small borderless>
+              <b-tr class="text-center">
+                <b-td>
+                  <b-badge pill>0</b-badge>
+                  <br />
+                  <small>0</small>
+                </b-td>
+                <b-td>
+                  <b-badge pill>1</b-badge>
+                  <br />
+                  <small>2</small>
+                </b-td>
+                <b-td>
+                  <b-badge pill>2</b-badge>
+                  <br />
+                  <small>5</small>
+                </b-td>
+                <b-td>
+                  <b-badge pill>3</b-badge>
+                  <br />
+                  <small>9</small>
+                </b-td>
+                <b-td>
+                  <b-badge pill>4</b-badge>
+                  <br />
+                  <small>5</small>
+                </b-td>
+                <b-td>
+                  <b-badge pill>5</b-badge>
+                  <br />
+                  <small>10</small>
+                </b-td>
+                <b-td>
+                  <b-badge pill>6+</b-badge>
+                  <br />
+                  <small>3</small>
+                </b-td>
+              </b-tr>
+             </b-table-simple>
+          </b-col>
+          <b-col>
+            <h3>&nbsp;</h3>
+            <b-table-simple small>
+              <template v-for="(value, index) in manaSymbols">
+                <b-tr v-bind:key="index">
+                  <b-td>
+                    <template v-for="(style, index) in value.styles">
+                      <i v-bind:key="index" v-bind:class="style" class="ms-cost ms"></i>
+                    </template>
+                  </b-td>
+                  <b-td>{{value.amount}}</b-td>
+                </b-tr>
+              </template>
+            </b-table-simple>
+          </b-col>
+          <b-col>
+            <h3>Types</h3>
+            
+            <b-table-simple small>
+              <template v-for="(item) in cardTypes">
+                <tr v-bind:key="item.name">
+                  <td>
+                    <b-badge variant="primary">{{item.name}}</b-badge>
+                  </td>
+                  <td>{{ item.count }}</td>
+                </tr>
+                <template v-for="(amount, id) in item.types">
+                  <tr v-bind:key="id">
+                    <td>
+                      &nbsp; 
+                      <b-badge>{{id}}</b-badge>
+                    </td>
+                    <td>{{amount}}</td>
+                  </tr>
+                </template>
+              </template>
+            </b-table-simple>
+          </b-col>
+        </b-row>
+        <!--<b-img fluid src="https://dotesports-media.nyc3.cdn.digitaloceanspaces.com/wp-content/uploads/2019/04/12125716/Singleton-Deck-Guide-Mana-Curve-MTG-Arena.jpg" />-->
       </b-col>
       <b-col cols="1">
         <div class="text-right">
@@ -132,14 +156,20 @@
 </template>
 
 <script>
+import { _ } from "underscore";
 import { mapState, mapGetters } from "vuex";
-import { checkColor, countColorless, exportDeck } from "@/utilities/deck";
+import { exportDeck, getCardTypes } from "@/utilities/deck"; // checkColor, countColorless
+import ColorIndenity from "@/components/ColorIndenity.vue";
 
 export default {
   name: "Deck",
+  components: {
+    ColorIndenity
+  },
   data: function() {
     return {
       editing: false,
+      extraTypes: false,
       form: {
         name: "",
         type: null,
@@ -150,63 +180,95 @@ export default {
   computed: {
     ...mapState({
       deck(state) {
-        return state.building.decks.find(_ => _.id == this.$route.params.id);
+        return state.building.decks.find(item => item.id == this.$route.params.id);
       },
       isComamander(state) {
-        let deck = state.building.decks.find(_ => _.id == this.$route.params.id);
-        if(deck) {
-          return deck.type == "commander" || deck.type == "duel";
-        } else {
+        let deck = state.building.decks.find(item => item.id == this.$route.params.id);
+        if(!deck) {
           return false;
         }
-      },
-      deckLimit() {
-        // TODO: min for standard 
-        /*
-        let deck = state.building.decks.find(_ => _.id == this.$route.params.id);
-        if(deck) {
-          if(deck.type == "commander" || deck.type == "duel") {
 
-          }
-        } else {
+        return deck.type == "commander" || deck.type == "duel";
+      },
+      avgCMC(state) {
+        let deck = state.building.decks.find(item => item.id == this.$route.params.id);
+        if(!deck) {
           return 0;
         }
-        */
+
+        let total = deck.cards.map(item => item.card.cmc ? item.card.cmc : 0).reduce((acc, value) => acc + value, 0);
+        return (total / deck.cards.length).toFixed(2);
       },
-      generalImage(state) {
-        let deck = state.building.decks.find(_ => _.id == this.$route.params.id);
-        return `https://api.scryfall.com/cards/${deck.general}?format=image&version=small`;
+      manaSymbols(state) {
+        let deck = state.building.decks.find(item => item.id == this.$route.params.id);
+        if(!deck) {
+          return {};
+        }
+        
+        let regx = /{(.*?)}/g;
+        let groups = deck.cards
+          .map(item => Array.from(item.card.mana_cost.matchAll(regx)).map(m => m[1]) )
+          .map(symbols => _.countBy(symbols))
+          .map(symbols => Object.keys(symbols)
+            .map(key => symbols[key] > 1 ? _.times(symbols[key], function(n){ return n; })
+            .reduce((total) => total += key, '') : key) );
+        
+        let collection = _.chain(groups)
+         .flatten()
+         .countBy()
+         .map(function(value, key) { 
+            let styles = [];
+            if(key.includes('/')) {
+              styles = ["ms-" + key.toLowerCase().split('/').join('')];
+            } else {
+              for (let i = 0; i < key.length; i++) {
+                styles.push("ms-" + key[i].toLowerCase());
+              }
+            }
+            return { 
+              name: key,
+              amount: value,
+              styles: styles
+            };
+          })
+         .sortBy('name')
+         .value();
+
+        return collection;
       },
-      totalCost(state) {
-        let deck = state.building.decks.find(_ => _.id == this.$route.params.id);
+      cardTypes(state) {
+        let deck = state.building.decks.find(item => item.id == this.$route.params.id);
+        if(!deck) {
+          return {};
+        }
+
+        let types = getCardTypes(deck, state.settings);
+        return types;
+      },
+      deckLimit(state) {
+        let deck = state.building.decks.find(item => item.id == this.$route.params.id);
+        if(!deck) {
+          return 0;
+        }
+
+        if(deck.type == "commander" || deck.type == "duel") {
+          return 1;
+        } else {
+          return 4;
+        }
+      },
+      existmatedCost(state) {
+        let deck = state.building.decks.find(item => item.id == this.$route.params.id);
         if(deck) {
           let cost = this.deck.cards
-            .map(_ => _.card.prices.usd ? parseFloat(_.card.prices.usd) : 0.0)
+            .map(item => item.card.prices.usd ? parseFloat(item.card.prices.usd) : 0.0)
             .reduce((state, value) => state + value, 0);
 
           return cost.toFixed(2);
         } else {
           return "0.00";
         }
-      },
-      manaCountWhite(state) {
-        return checkColor(state, this.$route.params.id, /{W}/g);
-      },
-      manaCountBlue(state) {
-        return checkColor(state, this.$route.params.id, /{U}/g);
-      },
-      manaCountBlack(state) {
-        return checkColor(state, this.$route.params.id, /{B}/g);
-      },
-      manaCountRed(state) {
-        return checkColor(state, this.$route.params.id, /{R}/g);
-      },
-      manaCountGreen(state) {
-        return checkColor(state, this.$route.params.id, /{G}/g);
-      },
-      manaCountColorless(state) {
-        return countColorless(state, this.$route.params.id);
-      },
+      }
     }),
     ...mapGetters({
       types: "deckTypes"

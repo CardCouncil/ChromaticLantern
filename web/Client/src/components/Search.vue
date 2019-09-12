@@ -158,6 +158,7 @@ export default {
       this.loading = true;
       this.cards = [];
       this.selection = [];
+      this.search.simple = this.search.simple.trim();
 
       let name = encodeURIComponent(this.search.simple);
       let query = `name:"${name}"`;

@@ -7,6 +7,7 @@ import store from "./store";
 import "./plugins/bootstrap-vue";
 import "./plugins/icons-vue";
 import "./plugins/loading-vue";
+import "./plugins/charting-vue"
 
 Vue.config.productionTip = false;
 

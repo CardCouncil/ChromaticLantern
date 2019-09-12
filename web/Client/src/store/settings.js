@@ -9,7 +9,8 @@ const SettingsModule = {
       lands: [],
       artifacts: [],
       enchantments: [],
-      spells: []
+      instants: [],
+      sorceries: []
     }
   },
   actions: {
@@ -58,7 +59,8 @@ const SettingsModule = {
       state.types.lands = data[2];
       state.types.artifacts = data[3];
       state.types.enchantments = data[4];
-      state.types.spells = data[5];
+      state.types.instants = data[5];
+      state.types.sorceries = data[5];
     }
   },
   getters: {}

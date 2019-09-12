@@ -28,47 +28,66 @@ const BuildingModule = {
       let data = { ...options };
       commit("editDeck", data);
     },
-    async addCards({ commit }, options) {
-      let cards = [];
+    async addCards({ state, commit }, options) {
+      let cards = {
+        new: [],
+        update: [],
+      };
 
+      let deck = state.decks.find(_ => _.id == options.deck);
       for (const key of options.cards) {
-        // Get Card 
-        let cardUrl = `https://api.scryfall.com/cards/${key.set}/${key.collector_number}`;
-        let card = await axios.get(cardUrl).then(response => response.data);
+        let existing = deck.cards.find(_ => _.card.set == key.set && _.card.collector_number == key.collector_number);
+        if(existing) {
+          let item = {
+            id: existing.id,
+            target: existing.target + 1,
+          };
+          cards.update.push(item);
+        } else {
+          // Get Card
+          let cardUrl = `https://api.scryfall.com/cards/${key.set}/${key.collector_number}`;
+          let card = await axios.get(cardUrl).then(response => response.data);
 
-        // Get Card Reprints
-        let query = `set:${key.set} number:${key.collector_number}`;
-        let reprintsUrl = `https://api.scryfall.com/cards/search?q=${query}&unique=prints`;
-        let reprints = await axios.get(reprintsUrl).then(response => response.data.data);
+          // Get Card Reprints
+          let reprints = [];
+          if(card.reprint) {
+            let query = `set:${key.set} number:${key.collector_number}`;
+            let reprintsUrl = `https://api.scryfall.com/cards/search?q=${query}&unique=prints`;
+            reprints = await axios.get(reprintsUrl).then(response => response.data.data);
+          }
+          
+          // Get Card Upgrades
+          let upgradeUrl = `/api/StrictlyBetter/Upgrades/?name=${card.name}`;
+          let upgrades = await axios.get(upgradeUrl).then(response => {
+            return (response.data) ? response.data.data : [];
+          // eslint-disable-next-line no-unused-vars
+          }).catch(_ => {
+            return [];
+          });
 
-        // Get Card Upgrades
-        let upgradeUrl = `/api/StrictlyBetter/Upgrades/?name=${card.name}`;
-        var upgrades = await axios.get(upgradeUrl).then(response => {
-          return (response.data) ? response.data.data : [];
-        // eslint-disable-next-line no-unused-vars
-        }).catch(_ => {
-          return [];
-        });
-
-        var item = {
-          id: shortid.generate(),
-          card: card,
-          target: key.amount ? key.amount : 1,
-          found: 0,
-          has_reprints: reprints.length > 0,
-          reprints: reprints,
-          has_upgrades: upgrades.length > 0,
-          upgrades: upgrades
-        };
-        cards.push(item);
+          let item = {
+            id: shortid.generate(),
+            card: card,
+            target: key.amount ? key.amount : 1,
+            found: 0,
+            has_reprints: reprints.length > 0,
+            reprints: reprints,
+            has_upgrades: upgrades.length > 0,
+            upgrades: upgrades
+          };
+          cards.new.push(item);
+        }
       }
 
-      let data = {
+      commit("addCards", {
         deck: options.deck,
-        cards: cards,
-      }
+        cards: cards.new,
+      });
 
-      commit("addCards", data);
+      commit("updateTargets", {
+        deck: options.deck,
+        cards: cards.update,
+      });
     },
     removeCard({ commit }, options) {
       var data = { 
@@ -131,6 +150,13 @@ const BuildingModule = {
       let deck = state.decks.find(_ => _.id == data.deck);
       deck.cards = deck.cards.concat(data.cards);
       deck.cards.sort(function(lhs, rhs) { return lhs.card.collector_number - rhs.card.collector_number; });
+    },
+    updateTargets(state, data) {
+      let deck = state.decks.find(_ => _.id == data.deck);
+      for (const item of data.cards) {
+        let card = deck.cards.find(_ => _.id == item.id);
+        card.target = item.target;
+      }
     },
     removeCard(state, data) {
       let deck = state.decks.find(_ => _.id == data.deck);
