@@ -31,7 +31,7 @@ export function countColorless(state, id) {
 }
 */
 
-
+/*
 export function getManaSymbols(deck) {
   let symbols = [/W/g, /U/g, /B/g, /R/g, /G/g, /C/g, /P/g];
   let colors = ["W","U","B","R","G","C","P"];
@@ -56,65 +56,81 @@ export function getManaSymbols(deck) {
   }
   console.log(counts);
 }
- 
-function countCardType(type) {
-  return Object.keys(type).map((k) => type[k]).reduce((acc, value) => acc + value, 0);
-}
+*/
 
 export function getCardTypes(deck, settings) {
-  let groups = {};
+  let groups = [
+    {
+      name: "Planeswalkers",
+      search: "Planeswalker",
+      count: 0,
+      key: "walkers",
+      types: []
+    },
+    {
+      name: "Creatures",
+      search: "Creature",
+      count: 0,
+      key: "creatures",
+      types: []
+    },
+    {
+      name: "Artifacts",
+      search: "Artifact",
+      count: 0,
+      key: "artifacts",
+      types: []
+    },
+    {
+      name: "Enchantments",
+      search: "Enchantment",
+      count: 0,
+      key: "enchantments",
+      types: []
+    },
+    {
+      name: "Instants",
+      search: "Instant",
+      count: 0,
+      key: "instants",
+      types: []
+    },
+    {
+      name: "Sorceries",
+      search: "Sorcery",
+      count: 0,
+      key: "sorceries",
+      types: []
+    },
+    {
+      name: "Lands",
+      search: "Land",
+      count: 0,
+      key: "lands",
+      types: []
+    }
+  ];
 
-  for (const key in settings.types.groups) {
-    let name = settings.types.groups[key];
-    groups[key] = {};
-    const types = settings.types[key];
-    for (const type of types) {
-      for (const item of deck.cards) {
-        if(item.card.type_line.includes(name) && item.card.type_line.includes(type)) {
-          if(groups[key][type]) {
-            groups[key][type]++;
+  for (const item of deck.cards) {
+    for (const group of groups) {
+      if(item.card.type_line.includes(group.search)) {
+        group.count++;
+      }
+
+      const types = settings.types[group.key];
+      for (const type of types) {
+        if(item.card.type_line.includes(type)) {
+          if(group.types[type]) {
+            group.types[type]++;
           } else {
-            groups[key][type] = 1;
+            group.types[type] = 1;
           }
         }
       }
     }
   }
 
-  let data = [
-    {
-      name: "Planeswalkers",
-      count: countCardType(groups.walkers),
-      types: groups.walkers
-    },
-    {
-      name: "Creatures",
-      count: countCardType(groups.creatures),
-      types: groups.creatures
-    },
-    {
-      name: "Artifacts",
-      count: countCardType(groups.artifacts),
-      types: groups.artifacts
-    },
-    {
-      name: "Instants",
-      count: countCardType(groups.instants),
-      types: groups.instants
-    },
-    {
-      name: "Sorceries",
-      count: countCardType(groups.sorceries),
-      types: groups.sorceries
-    },
-    {
-      name: "Lands",
-      count: countCardType(groups.lands),
-      types: groups.lands
-    }
-  ];
-
-  return data;
+  return groups;
 }
 
 export function compressDeck(deck) {

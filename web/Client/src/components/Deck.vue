@@ -99,7 +99,7 @@
             <h3>&nbsp;</h3>
             <b-table-simple small>
               <template v-for="(value, index) in manaSymbols">
-                <b-tr v-bind:key="index">
+                <b-tr v-bind:key="index" v-if="value.primary == true || details == true">
                   <b-td>
                     <template v-for="(style, index) in value.styles">
                       <i v-bind:key="index" v-bind:class="style" class="ms-cost ms"></i>
@@ -121,26 +121,30 @@
                   </td>
                   <td>{{ item.count }}</td>
                 </tr>
-                <template v-for="(amount, id) in item.types">
-                  <tr v-bind:key="id">
-                    <td>
-                      &nbsp; 
-                      <b-badge>{{id}}</b-badge>
-                    </td>
-                    <td>{{amount}}</td>
-                  </tr>
+                <template v-if="details">
+                  <template v-for="(key) in Object.keys(item.types)">
+                    <tr v-bind:key="key">
+                      <td>
+                        &nbsp; 
+                        <b-badge>{{key}}</b-badge>
+                      </td>
+                      <td>{{item.types[key]}}</td>
+                    </tr>
+                  </template>
                 </template>
               </template>
             </b-table-simple>
           </b-col>
         </b-row>
-        <!--<b-img fluid src="https://dotesports-media.nyc3.cdn.digitaloceanspaces.com/wp-content/uploads/2019/04/12125716/Singleton-Deck-Guide-Mana-Curve-MTG-Arena.jpg" />-->
       </b-col>
       <b-col cols="1">
         <div class="text-right">
           <b-button-group vertical>
             <b-button variant="secondary" size="sm" title="Edit" @click="open" >
               <v-icon name="edit" />
+            </b-button>
+            <b-button :variant="details ? 'primary' : 'secondary'" size="sm" title="Details" @click="details = !details" >
+              <v-icon name="info-circle" />
             </b-button>
             <b-button variant="secondary" size="sm" title="Share" @click="share">
               <v-icon name="share-alt" />
@@ -169,7 +173,7 @@ export default {
   data: function() {
     return {
       editing: false,
-      extraTypes: false,
+      details: true,
       form: {
         name: "",
         type: null,
@@ -225,8 +229,10 @@ export default {
                 styles.push("ms-" + key[i].toLowerCase());
               }
             }
+            
             return { 
               name: key,
+              primary: isNaN(key) && key != "X",
               amount: value,
               styles: styles
             };

@@ -200,7 +200,7 @@ export default {
     },
     findAdvanced(evt) {
       evt.preventDefault();
-      console.log("Advanced", this.search.advanced);
+      // console.log("Advanced", this.search.advanced);
     },
     blukImport(evt) {
       evt.preventDefault();
