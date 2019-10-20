@@ -56,7 +56,15 @@ const BuildingModule = {
             reprints = await axios.get(reprintsUrl).then(response => response.data.data);
           }
           
+          /*
           // Get Card Upgrades
+          let upgradeUrl = 'https://www.strictlybetter.eu/api/obsoletes/'
+          let upgrades = await axios.get(upgradeUrl);
+
+          console.log(upgrades);
+          return;
+          */
+
           let upgradeUrl = `/api/StrictlyBetter/Upgrades/?name=${card.name}`;
           let upgrades = await axios.get(upgradeUrl).then(response => {
             return (response.data) ? response.data.data : [];
@@ -64,6 +72,7 @@ const BuildingModule = {
           }).catch(_ => {
             return [];
           });
+
 
           let item = {
             id: shortid.generate(),

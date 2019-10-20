@@ -173,7 +173,7 @@ export default {
   data: function() {
     return {
       editing: false,
-      details: true,
+      details: false,
       form: {
         name: "",
         type: null,
@@ -302,7 +302,7 @@ export default {
       this.$store.dispatch("editDeck", data);
     },
     clear() {
-      let msg = "Are you sure you want to remove this card?";
+      let msg = "Are you sure you want to remove all cards?";
       this.$bvModal.msgBoxConfirm(msg).then(value => {
         if(value) {
           let data = { deck: this.deck };
