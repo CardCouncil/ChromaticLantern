@@ -3,23 +3,31 @@
     <b-row role="tablist">
       <b-col>
         <template v-for="group in groups">
-          <b-card no-body class="mb-1" v-bind:key="group.set.code">
-            <b-card-header header-tag="header" class="p-1" role="tab">
+          <b-card
+            :key="group.set.code"
+            no-body
+            class="mb-1"
+          >
+            <b-card-header
+              header-tag="header"
+              class="p-1"
+              role="tab"
+            >
               <b-button
+                v-b-toggle="'accordion-' + group.set.code"
                 block
                 variant="link"
                 href="#"
-                v-b-toggle="'accordion-' + group.set.code"
                 style="line-height: 32px;"
               >
                 <b-img
                   :src="group.set.icon_svg_uri"
                   class="float-left img-set"
-                ></b-img>
+                />
                 <span>{{ group.set.name }}</span>
-                <small class="float-right"
-                  ><b-badge>{{ group.cards.length }}</b-badge></small
-                >
+                <small class="float-right">
+                  <b-badge>{{ group.cards.length }}</b-badge>
+                </small>
               </b-button>
             </b-card-header>
             <b-collapse
@@ -31,7 +39,7 @@
                 <b-row>
                   <template v-for="card in group.cards">
                     <b-col
-                      v-bind:key="card.id"
+                      :key="card.id"
                       cols="12"
                       sm="12"
                       md="6"
@@ -46,17 +54,18 @@
                         class="p-1"
                       >
                         <b-card-body class="p-1 text-center">
-                          <b-badge v-if="card.prices.usd"
-                            >${{ card.prices.usd }}</b-badge
-                          >
+                          <b-badge v-if="card.prices.usd">
+                            ${{ card.prices.usd }}
+                          </b-badge>
                           <b-button
-                            @click="remove(card.id, card.name)"
                             class="d-print-none"
                             variant="link"
                             size="sm"
                             block
-                            >Remove</b-button
+                            @click="remove(card.id, card.name)"
                           >
+                            Remove
+                          </b-button>
                         </b-card-body>
                       </b-card>
                     </b-col>
@@ -72,10 +81,7 @@
 </template>
 <script>
 export default {
-  name: "list",
-  mounted: function() {
-    this.$store.dispatch("load");
-  },
+  name: "List",
   computed: {
     groups: function() {
       let sets = this.$store.state.sets;
@@ -107,6 +113,9 @@ export default {
       });
       return list;
     }
+  },
+  mounted: function() {
+    this.$store.dispatch("load");
   },
   methods: {
     remove: function(id, name) {
