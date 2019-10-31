@@ -1,6 +1,6 @@
-# mtg-chromatic-lantern
+# Chromati Lantern
 
-[![Build status](https://ci.appveyor.com/api/projects/status/6q86yiwu6xoqsuf1?svg=true)](https://ci.appveyor.com/project/RGBKnights/mtg-chromatic-lantern)
+// [![Build status](https://ci.appveyor.com/api/projects/status/6q86yiwu6xoqsuf1?svg=true)](https://ci.appveyor.com/project/RGBKnights/mtg-chromatic-lantern)
 
 ## Project setup
 ```
@@ -26,6 +26,3 @@ npm run test
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
